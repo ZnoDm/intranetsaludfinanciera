@@ -2,11 +2,11 @@
     <div class="modal-header">
       <div class="modal-title h4" id="example-modal-sizes-title-lg">
         <ng-container>
-          <ng-container *ngIf="idRol > 0">Editar</ng-container>
-          <ng-container *ngIf="idRol === 0">Nuevo</ng-container>
+          <ng-container *ngIf="id > 0">Editar</ng-container>
+          <ng-container *ngIf="id === 0">Nuevo</ng-container>
           Rol
-          <ng-container *ngIf="idRol > 0"
-            >'{{ item.idRol }}'</ng-container
+          <ng-container *ngIf="id > 0"
+            >'{{ item.nombre }}'</ng-container
           >
         </ng-container>
       </div>
@@ -42,20 +42,7 @@
                         <div class="invalid-feedback" *ngIf="controlHasError('required', 'Descripcion')"> Descripcion obligatoria. </div> 
                         <div class="valid-feedback" *ngIf="isControlValid('Descripcion')">Descripcion correcto</div>
                       </div>
-                  </div>   
-                
-                <br>
-                <div class="row">
-                  <div class="col-lg-12">
-                      <label class="form-label">Activo</label>
-                      <span class="switch">
-                          <label>
-                              <input type="checkbox" name="Activo" formControlName="Activo">
-                              <span></span>
-                          </label>
-                      </span>
-                    </div>
-                </div>                
+                  </div>                 
             </div>                    
           </form>
       </ng-container>

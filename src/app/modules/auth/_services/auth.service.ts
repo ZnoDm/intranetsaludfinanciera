@@ -21,10 +21,10 @@ export class AuthService implements OnDestroy {
 
   // public fields
   currentUser$: Observable<UserModel>;
-  isLoading$: Observable<boolean>;
+ 
   currentUserSubject: BehaviorSubject<UserModel>;
   isLoadingSubject: BehaviorSubject<boolean>;
-
+  isLoading$: Observable<boolean>;
 
   constructor(
     private authHttpService: AuthHTTPService,
@@ -34,11 +34,11 @@ export class AuthService implements OnDestroy {
     private headerBasicAuthorizationService: HeaderBasicAuthorizationService,
     private jwtService: JwtService
   ) {
-    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
-
+    
     this.currentUserSubject = new BehaviorSubject<UserModel>(undefined);
     this.currentUser$ = this.currentUserSubject.asObservable();
-
+    
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 

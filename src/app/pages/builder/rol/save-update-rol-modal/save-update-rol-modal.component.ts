@@ -19,7 +19,7 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 export class SaveUpdateRolModalComponent implements OnInit {
   @Input() item: any;
   isLoading$;
-  idRol: number = 0;
+  id: number = 0;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
 
@@ -42,14 +42,13 @@ export class SaveUpdateRolModalComponent implements OnInit {
   loadCustomer() {
     
     if (this.item !== null) {
-      this.idRol = this.item.idRol;
+      this.id = this.item.id;
       this.loadForm();  
       this.formGroup.controls.Nombre.setValue(this.item.nombre)
-      this.formGroup.controls.Descripcion.setValue(this.item.descripcion);      
-      this.formGroup.controls.Activo.setValue(this.item.activo);      
+      this.formGroup.controls.Descripcion.setValue(this.item.descripcion);        
     } else {
       
-      this.idRol = 0;
+      this.id = 0;
       this.loadForm();
     }
   }
@@ -57,53 +56,83 @@ export class SaveUpdateRolModalComponent implements OnInit {
     this.formGroup = this.fb.group({
       Nombre: [null, Validators.compose([Validators.required])],
       Descripcion: [null, Validators.compose([Validators.required])],
-      Activo: [true],      
     });
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;
-    return {
-      IdRol: this.idRol,      
-      Nombre: formData.Nombre,
-      Descripcion: formData.Descripcion,    
-      Activo: formData.Activo
-    }
-    
+    return{    
+        nombre: formData.Nombre,
+        descripcion: formData.Descripcion,    
+      }
+   
   }
   
   save() {
     let data = this.prepareCustomer();
-    // this.rol_s.SaveUpdateRol(data).subscribe(
-    //   (data:any) => {
-    //     if (data[0].Ok > 0) {
-    //       this.toastr.successToastr(data[0].Message, 'Correcto!', {
-    //         toastTimeout: 2000,
-    //         showCloseButton: true,
-    //         animate: 'fade',
-    //         progressBar: true
-    //       });
-
-    //       this.modal.close(true);  
-    //     } else {
-    //       this.toastr.errorToastr(data[0].Message, 'Error!', {
-    //         toastTimeout: 2000,
-    //         showCloseButton: true,
-    //         animate: 'fade',
-    //         progressBar: true
-    //       });
-    //       // this.modal.close(true);  
-    //     }
-               
-    //   }, ( errorServicio ) => { 
-    //     this.toastr.errorToastr('Ocurrio un error.', 'Error!', {
-    //       toastTimeout: 2000,
-    //       showCloseButton: true,
-    //       animate: 'fade',
-    //       progressBar: true
-    //     });       
-    //     ;
-    //   }
-    // );
+    if(this.id == 0){
+      this.rol_s.create(data).subscribe(
+        (data:any) => {
+          if (data.ok > 0) {
+            this.toastr.successToastr(data.message, 'Correcto!', {
+              toastTimeout: 2000,
+              showCloseButton: true,
+              animate: 'fade',
+              progressBar: true
+            });
+            this.modal.close(true);  
+          } else {
+            this.toastr.errorToastr(data.message, 'Error!', {
+              toastTimeout: 2000,
+              showCloseButton: true,
+              animate: 'fade',
+              progressBar: true
+            });
+            this.modal.close(true);  
+          }
+                 
+        }, ( errorServicio ) => { 
+          this.toastr.errorToastr('Ocurrio un error.', 'Error!', {
+            toastTimeout: 2000,
+            showCloseButton: true,
+            animate: 'fade',
+            progressBar: true
+          });       
+          ;
+        }
+      );
+    }else{
+      this.rol_s.update(this.id,data).subscribe(
+        (data:any) => {
+          if (data.ok > 0) {
+            this.toastr.successToastr(data.message, 'Correcto!', {
+              toastTimeout: 2000,
+              showCloseButton: true,
+              animate: 'fade',
+              progressBar: true
+            });
+            this.modal.close(true);  
+          } else {
+            this.toastr.errorToastr(data.message, 'Error!', {
+              toastTimeout: 2000,
+              showCloseButton: true,
+              animate: 'fade',
+              progressBar: true
+            });
+            this.modal.close(true);  
+          }
+                 
+        }, ( errorServicio ) => { 
+          this.toastr.errorToastr('Ocurrio un error.', 'Error!', {
+            toastTimeout: 2000,
+            showCloseButton: true,
+            animate: 'fade',
+            progressBar: true
+          });       
+          ;
+        }
+      );
+    }
+   
   }
   
   isControlValid(controlName: string): boolean {
