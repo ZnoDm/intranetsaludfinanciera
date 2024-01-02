@@ -1,11 +1,16 @@
+import { StorageKeyEnum } from './../../../shared/enums/storage-key.enum';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Observable, BehaviorSubject, of, Subscription } from 'rxjs';
-import { map, catchError, switchMap, finalize } from 'rxjs/operators';
+import { map, catchError, switchMap, finalize, tap } from 'rxjs/operators';
 import { UserModel } from '../_models/user.model';
 import { AuthModel } from '../_models/auth.model';
 import { AuthHTTPService } from './auth-http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { StorageService } from 'src/app/shared/services/storage.service';
+import { HeaderBasicAuthorizationService } from 'src/app/shared/services/header-basic-authorization.service';
+import { JwtService } from 'src/app/shared/services/jwt.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +18,6 @@ import { Router } from '@angular/router';
 export class AuthService implements OnDestroy {
   // private fields
   private unsubscribe: Subscription[] = []; // Read more: => https://brianflove.com/2016/12/11/anguar-2-unsubscribe-observables/
-  private authLocalStorageToken = `${environment.appVersion}-${environment.USERDATA_KEY}`;
 
   // public fields
   currentUser$: Observable<UserModel>;
@@ -22,116 +26,125 @@ export class AuthService implements OnDestroy {
   isLoadingSubject: BehaviorSubject<boolean>;
 
 
+  constructor(
+    private authHttpService: AuthHTTPService,
+    private router: Router,
+    private storageService: StorageService,
+    private httpClient: HttpClient,
+    private headerBasicAuthorizationService: HeaderBasicAuthorizationService,
+    private jwtService: JwtService
+  ) {
+    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
+
+    this.currentUserSubject = new BehaviorSubject<UserModel>(undefined);
+    this.currentUser$ = this.currentUserSubject.asObservable();
+
+    this.isLoading$ = this.isLoadingSubject.asObservable();
+  }
+
+  ngOnDestroy() {
+    this.unsubscribe.forEach((sb) => sb.unsubscribe());
+  }
+
+  // public methods
+  login(model:any){
+    this.isLoadingSubject.next(true);
+    return this.httpClient.post(`${environment.apiUrl}/auth/login`, model, {
+    }).pipe(
+      tap((response: any) => {            
+          if (response.ok) {
+            this.storageService.set(StorageKeyEnum.USER_DETAIL, JSON.stringify(response.user));
+            this.currentUserSubject = new BehaviorSubject<UserModel>(response.user);
+            this.storageService.set(StorageKeyEnum.JWT_AUTHORIZATION, response.token);
+            this.jwtService.load(response.token);
+            console.log(this.currentUserSubject);
+          }
+      }),
+      catchError((err) => {
+        return of(err);
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    )
+  }
+
   get currentUserValue(): UserModel {
+    const user: UserModel = JSON.parse(this.storageService.get(StorageKeyEnum.USER_DETAIL));
+    this.currentUserSubject = new BehaviorSubject<UserModel>(user);
+    console.log(this.currentUserSubject.value)
     return this.currentUserSubject.value;
   }
 
   set currentUserValue(user: UserModel) {
+    this.storageService.set(StorageKeyEnum.USER_DETAIL, JSON.stringify(user));
     this.currentUserSubject.next(user);
   }
 
-  constructor(
-    private authHttpService: AuthHTTPService,
-    private router: Router
-  ) {
-    this.isLoadingSubject = new BehaviorSubject<boolean>(false);
-    this.currentUserSubject = new BehaviorSubject<UserModel>(undefined);
-    this.currentUser$ = this.currentUserSubject.asObservable();
-    this.isLoading$ = this.isLoadingSubject.asObservable();
-    const subscr = this.getUserByToken().subscribe();
-    this.unsubscribe.push(subscr);
-  }
-
-  // public methods
-  login(email: string, password: string): Observable<UserModel> {
-    this.isLoadingSubject.next(true);
-    return this.authHttpService.login(email, password).pipe(
-      map((auth: AuthModel) => {
-        const result = this.setAuthFromLocalStorage(auth);
-        return result;
-      }),
-      switchMap(() => this.getUserByToken()),
-      catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
+  isLoggedIn() {
+    let jwt: string = this.storageService.get(StorageKeyEnum.JWT_AUTHORIZATION);
+    if (jwt != null) {
+        this.jwtService.load(jwt);
+        return this.jwtService.isValid();
+    } else {
+        return false;
+    }
   }
 
   logout() {
-    localStorage.removeItem(this.authLocalStorageToken);
+    this.storageService.remove(StorageKeyEnum.JWT_AUTHORIZATION);
+    this.jwtService.clear();
     this.router.navigate(['/auth/login'], {
       queryParams: {},
     });
   }
 
-  getUserByToken(): Observable<UserModel> {
-    const auth = this.getAuthFromLocalStorage();
-    if (!auth || !auth.authToken) {
-      return of(undefined);
+  refreshToken() {
+    const auth = this.storageService.get(StorageKeyEnum.JWT_AUTHORIZATION)
+    console.log(auth);
+    if(!auth){
+      return of(undefined)
     }
-
     this.isLoadingSubject.next(true);
-    return this.authHttpService.getUserByToken(auth.authToken).pipe(
-      map((user: UserModel) => {
-        if (user) {
-          this.currentUserSubject = new BehaviorSubject<UserModel>(user);
-        } else {
-          this.logout();
-        }
-        return user;
+    return this.httpClient.get(`${environment.apiUrl}/auth/check-status`, {
+      headers: this.headerBasicAuthorizationService.getHeaders()
+    }).pipe(
+      tap((response: any) => {            
+          if (response.ok) {
+            console.log(response)
+            this.storageService.set(StorageKeyEnum.USER_DETAIL, JSON.stringify(response.user));
+            this.currentUserSubject = new BehaviorSubject<UserModel>(response.user);
+            this.storageService.set(StorageKeyEnum.JWT_AUTHORIZATION, response.token);
+            this.jwtService.load(response.token);
+            console.log(this.currentUserSubject);
+          } else {
+            this.logout();
+          }
       }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
-  }
-
-  // need create new user then login
-  registration(user: UserModel): Observable<any> {
-    this.isLoadingSubject.next(true);
-    return this.authHttpService.createUser(user).pipe(
-      map(() => {
-        this.isLoadingSubject.next(false);
-      }),
-      switchMap(() => this.login(user.email, user.password)),
       catchError((err) => {
-        console.error('err', err);
-        return of(undefined);
+        return of(err);
       }),
       finalize(() => this.isLoadingSubject.next(false))
-    );
+    )
   }
 
-  forgotPassword(email: string): Observable<boolean> {
+
+  
+  obtenerNavegacionPorUsuario() {
     this.isLoadingSubject.next(true);
-    return this.authHttpService
-      .forgotPassword(email)
-      .pipe(finalize(() => this.isLoadingSubject.next(false)));
-  }
-
-  // private methods
-  private setAuthFromLocalStorage(auth: AuthModel): boolean {
-    // store auth authToken/refreshToken/epiresIn in local storage to keep user logged in between page refreshes
-    if (auth && auth.authToken) {
-      localStorage.setItem(this.authLocalStorageToken, JSON.stringify(auth));
-      return true;
-    }
-    return false;
-  }
-
-  private getAuthFromLocalStorage(): AuthModel {
-    try {
-      const authData = JSON.parse(
-        localStorage.getItem(this.authLocalStorageToken)
+    return this.httpClient.get(`${environment.apiUrl}/auth/permisos`,
+      { headers: this.headerBasicAuthorizationService.getHeaders()
+      }).pipe(
+        catchError((err) => {
+          return of(err);
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
       );
-      return authData;
-    } catch (error) {
-      console.error(error);
-      return undefined;
-    }
   }
 
-  ngOnDestroy() {
-    this.unsubscribe.forEach((sb) => sb.unsubscribe());
+  redirectToLogin() {
+    this.router.navigate(['/auth/login']);
+  }
+
+  redirectToMain() {
+    this.router.navigate(['/']);
   }
 }

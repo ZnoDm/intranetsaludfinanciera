@@ -45,11 +45,14 @@ export class LayoutComponent implements OnInit, AfterViewInit {
   constructor(
     private initService: LayoutInitService,
     private layout: LayoutService,
+    
   ) {
     this.initService.init();
   }
 
   ngOnInit(): void {
+
+
     // build view by layout config settings
     this.selfLayout = this.layout.getProp('self.layout');
     this.asideSelfDisplay = this.layout.getProp('aside.self.display');

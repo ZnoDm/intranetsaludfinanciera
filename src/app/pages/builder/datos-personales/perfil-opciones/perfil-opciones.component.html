@@ -1,0 +1,80 @@
+<!--begin::Profile Card-->
+<div  class="card card-custom card-stretch">
+    <!--begin::Body-->
+    <div id="step_datosPersonales" class="card-body pt-4">
+      
+      <!--begin::User-->
+      <div class="d-flex align-items-center pt-4">
+        <div class="symbol symbol-60 symbol-xxl-100 mr-5 align-self-start align-self-xxl-center">
+          <div class="symbol-label"  style="background-image: url('../../../../../assets/media/aspire-targox/icon1.png');"></div>
+          <i class="symbol-badge bg-success"></i>
+        </div>
+        <div>
+          <a class="font-weight-bolder font-size-h5 text-dark cursor-pointer">
+            {{ jwtUser?.nombres }}
+          </a>
+          
+        </div>
+      </div>
+      <!--end::User-->
+  
+      <!--begin::Nav-->
+      <div class="navi navi-bold navi-hover navi-active navi-link-rounded pt-10" >
+        
+        <div id="step_personal" class="navi-item mb-2">
+          <a class="navi-link py-4" [routerLink]="['./InformacionPersonal']" routerLinkActive="active">
+            <span class="navi-icon mr-2">
+              <span 
+                [inlineSVG]="'../../../../assets/media/svg/icons/General/User.svg'"  
+                cacheSVG="true" class="svg-icon svg-icon-success"></span>
+            </span>
+            <span class="navi-text font-size-lg">
+              Informacion Personal
+            </span>
+          </a>
+        </div>
+        <div id="step_password" class="navi-item mb-2">
+          <a class="navi-link py-4" [routerLink]="['./InteresCurso']" routerLinkActive="active">
+            <span class="navi-icon mr-2">
+              <span 
+                [inlineSVG]="'../../../../assets/media/svg/icons/General/Notification2.svg'" 
+                cacheSVG="true" class="svg-icon svg-icon-success"></span>
+            </span>
+            <span class="navi-text font-size-lg">
+              Interés curso
+            </span>
+          </a>
+        </div>
+        <div id="step_password" class="navi-item mb-2">
+          <a class="navi-link py-4" [routerLink]="['./DiagnosticoDeuda']" routerLinkActive="active">
+            <span class="navi-icon mr-2">
+              <span 
+                [inlineSVG]="'../../../../assets/media/svg/icons/Shopping/Wallet2.svg'" 
+                cacheSVG="true" class="svg-icon svg-icon-success"></span>
+            </span>
+            <span class="navi-text font-size-lg">
+              Deuda
+            </span>
+          </a>
+        </div>
+        <div id="step_password" class="navi-item mb-2">
+          <a class="navi-link py-4" [routerLink]="['./CambiarContraseña']" routerLinkActive="active">
+            <span class="navi-icon mr-2">
+              <span 
+                [inlineSVG]="'../../../../assets/media/svg/icons/Communication/Shield-user.svg'" 
+                cacheSVG="true" class="svg-icon svg-icon-success"></span>
+            </span>
+            <span class="navi-text font-size-lg">
+              Cambiar Contraseña
+            </span>
+          </a>
+        </div>
+        
+        
+      </div>
+      <!--end::Nav-->
+    </div>
+    <!--end::Body-->
+  </div>
+  <!--end::Profile Card-->
+

@@ -1,6 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { LayoutService } from '../../../../_metronic/core';
+import { PermisosNavegacionService } from '../../../../shared/services/permisos-navegacion.service';
 
 @Component({
   selector: 'app-aside',
@@ -20,7 +21,12 @@ export class AsideComponent implements OnInit {
   asideMenuScroll = 1;
   asideSelfMinimizeToggle = false;
 
-  constructor(private layout: LayoutService, private loc: Location) { }
+  dataUrls:any [];
+  constructor(
+    private layout: LayoutService, 
+    private loc: Location,
+    private permisosNavegacionService: PermisosNavegacionService
+    ) { }
 
   ngOnInit(): void {
     // load view settings
@@ -40,6 +46,8 @@ export class AsideComponent implements OnInit {
     // this.asideMenuCSSClasses = `${this.asideMenuCSSClasses} ${this.asideMenuScroll === 1 ? 'scroll my-4 ps ps--active-y' : ''}`;
     // Routing
     this.location = this.loc;
+    this.dataUrls = this.permisosNavegacionService.getUrls();
+    console.log(this.dataUrls);
   }
 
   private getLogo() {

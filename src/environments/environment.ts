@@ -10,12 +10,6 @@ export const environment = {
 
   apiUrl: 'http://localhost:3000/api',
 
-  apiNewsUrl: 'https://newsapi.org/v2',
-  apiNewsKey: 'e51fbc55994e45afbe1ccde7a5620c0e',
-  apiNewsMediaUrl: 'http://api.mediastack.com/v1/news',
-  apiNewsMediaKey: 'a7fecab9f72c75221ba500292392c6a1',
-
-
 
   firebaseConfig : {
     apiKey: "AIzaSyADmRuv4oe9klWtsE4TKPvJzA3fNTC1u5g",

@@ -2,12 +2,23 @@ import { AuthModel } from './auth.model';
 import { AddressModel } from './address.model';
 import { SocialNetworksModel } from './social-networks.model';
 
+
+export interface Person {
+  id?:                     number;
+  nombres?:                string;
+  apellidos?:              string;
+  telefono?:               string;
+  tipoDocumentoIdentidad?: null;
+  documentoIdentidad?:     null;
+  urlAvatar?:              string;
+}
 export class UserModel extends AuthModel {
   id: number;
-  username: string;
-  password: string;
-  fullname: string;
+  username: string = '';
+  password: string = '';
+  fullname: string = 'algo';
   email: string;
+  isActive:boolean;
   pic: string;
   roles: number[];
   occupation: string;
@@ -45,7 +56,9 @@ export class UserModel extends AuthModel {
       thingsYouMissedSindeYouLastLoggedIntoKeen: boolean,
       newsAboutMetronicOnPartnerProductsAndOtherServices: boolean,
       tipsOnMetronicBusinessProducts: boolean
-    }
+    },
+    person?: Person;
+
   };
 
   setUser(user: any) {

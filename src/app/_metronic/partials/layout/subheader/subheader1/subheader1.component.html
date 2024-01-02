@@ -56,68 +56,7 @@
     </div>
     <!--end::Info-->
 
-    <!--begin::Toolbar-->
-    <div class="d-flex align-items-center">
-      <ng-container *ngIf="subheaderDisplayDaterangepicker">
-        <!--begin::Daterange-->
-        <a
-          class="btn btn-light-primary btn-sm font-weight-bold mr-2 cursor-pointer"
-          id="kt_dashboard_daterangepicker"
-          data-toggle="tooltip"
-          title="Select dashboard daterange"
-          data-placement="left"
-        >
-          <span
-            class="opacity-60 font-weight-bold mr-2"
-            id="kt_dashboard_daterangepicker_title"
-            >Today</span
-          >
-          <span class="font-weight-bold" id="kt_dashboard_daterangepicker_date"
-            >Aug 16</span
-          >
-        </a>
-        <!--end::Daterange-->
-      </ng-container>
-      <ng-container *ngIf="!subheaderDisplayDaterangepicker">
-        <!--begin::Actions-->
-        <a
-          class="btn btn-light-primary font-weight-bolder btn-sm cursor-pointer"
-        >
-          Actions
-        </a>
-        <!--end::Actions-->
-      </ng-container>
 
-      <!--begin::Dropdown-->
-      <div
-        class="dropdown dropdown-inline"
-        data-toggle="tooltip"
-        title="Quick actions"
-        placement="bottom-right"
-        ngbDropdown
-      >
-        <a
-          class="btn btn-icon cursor-pointer"
-          data-toggle="dropdown"
-          aria-haspopup="true"
-          aria-expanded="false"
-          ngbDropdownToggle
-        >
-          <span
-            [inlineSVG]="'./assets/media/svg/icons/Files/File-plus.svg'"
-            cacheSVG="true"
-            class="svg-icon svg-icon-success svg-icon-2x"
-          ></span>
-        </a>
-        <div
-          class="dropdown-menu dropdown-menu-md dropdown-menu-right p-0 m-0"
-          ngbDropdownMenu
-        >
-          <app-dropdown-menu1></app-dropdown-menu1>
-        </div>
-      </div>
-      <!--end::Dropdown-->
-    </div>
     <!--end::Toolbar-->
   </div>
 </div>

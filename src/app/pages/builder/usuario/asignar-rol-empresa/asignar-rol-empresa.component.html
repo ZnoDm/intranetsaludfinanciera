@@ -1,0 +1,53 @@
+<div class="modal-content modal-aspire">
+	<div class="modal-header">
+		<div class="modal-title h4" id="example-modal-sizes-title-lg">
+			<ng-container>
+				<ng-container>Asignar empresas y roles</ng-container>
+			</ng-container>
+		</div>
+	</div>
+	<div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+		<ng-container *ngIf="!(array_empresas && array_roles); else loadAsignar">
+			<div class="overlay-layer bg-transparent">
+				<div class="spinner spinner-lg spinner-success"></div>
+			</div>
+		</ng-container>
+
+		<ng-template #loadAsignar>
+			<form action="#"  class="form form-label-right" >
+				<div class="form-group">
+					<div class="row">
+						<div class="col-lg-6">
+							<h5>Empresas:</h5>
+                            <div *ngFor="let item of array_empresas" style="margin-bottom: 5px; margin-top: 10px;">
+                                <label class="checkbox checkbox-lg checkbox-inline" style="font-size: 12px;">
+                                    <input type="checkbox" [checked]="item.activo" (change)="onPressed(item,item.idEmpresa,item.idEmpresaUsuario,item.activo,'Empresa')"/>
+                                    <span></span>&nbsp;&nbsp;{{item.razonSocial }}
+                                </label>
+                            </div>
+						</div>
+                        <div class="col-lg-6">
+							<h5>Roles:</h5>
+                            <div *ngFor="let item of array_roles" style="margin-bottom: 5px; margin-top: 10px;">
+                                <label class="checkbox checkbox-lg checkbox-inline" style="font-size: 12px;">
+                                    <input type="checkbox" [checked]="item.activo" (change)="onPressed(item,item.idRol,item.idRolUsuario,item.activo,'Rol')"/>
+                                    <span></span>&nbsp;&nbsp;{{item.nombreRol}}
+                                </label>
+                            </div>
+						</div>
+					</div>
+				</div>
+			</form>
+		</ng-template>
+	</div>
+	
+	<div class="modal-footer">
+		<button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+		<ng-container>
+			<button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="!(array_empresas && array_roles && !hide_save)">
+				Guardar
+			</button>
+		</ng-container>
+	</div>
+</div>

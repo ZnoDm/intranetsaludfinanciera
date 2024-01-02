@@ -22,7 +22,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     password: 'demo',
   };
   loginForm: FormGroup;
-  hasError: boolean;
+  hasError: boolean = false;
+  mesageError:string;
   returnUrl: string;
   isLoading$: Observable<boolean>;
 
@@ -33,12 +34,13 @@ export class LoginComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private authService: AuthService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private cdr: ChangeDetectorRef,
   ) {
     this.isLoading$ = this.authService.isLoading$;
-    // redirect to home if already logged in
+    console.log(this.authService.currentUserValue);
     if (this.authService.currentUserValue) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/dashboard']);
     }
   }
 
@@ -60,7 +62,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.defaultAuth.email,
         Validators.compose([
           Validators.required,
-          Validators.email,
           Validators.minLength(3),
           Validators.maxLength(320), // https://stackoverflow.com/questions/386294/what-is-the-maximum-length-of-a-valid-email-address
         ]),
@@ -78,17 +79,33 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   submit() {
     this.hasError = false;
-    const loginSubscr = this.authService
-      .login(this.f.email.value, this.f.password.value)
-      .pipe(first())
-      .subscribe((user: UserModel) => {
-        if (user) {
-          this.router.navigate([this.  returnUrl]);
-        } else {
-          this.hasError = true;
-        }
-      });
-    this.unsubscribe.push(loginSubscr);
+    if(this.loginForm.invalid) {
+      Object.keys(this.f).forEach(controlName =>
+				this.f[controlName].markAsTouched()
+			);
+      return;
+    }
+    
+    let model = {
+      email: this.f.email.value.trim(), 
+      password: this.f.password.value
+    }
+    this.authService.login(model)
+			.subscribe((response:any) => {
+        console.log(response)
+				if (response && response.ok) {
+				  this.authService.redirectToMain();
+				} else {
+					this.hasError = true;
+          this.mesageError = response?.error?.message || response?.message;
+				}
+				this.cdr.detectChanges();
+			}, (error) => {
+				this.hasError = true;
+        this.mesageError = error?.error?.message;
+				this.cdr.detectChanges();
+			});
+
   }
 
   ngOnDestroy() {

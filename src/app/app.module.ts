@@ -16,13 +16,11 @@ import { HighlightModule, HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { SplashScreenModule } from './_metronic/partials/layout/splash-screen/splash-screen.module';
 // #fake-start#
 import { FakeAPIService } from './_fake/fake-api.service';
+import { ToastrModule } from 'ng6-toastr-notifications';
 // #fake-end#
 
 function appInitializer(authService: AuthService) {
   return () => {
-    return new Promise((resolve) => {
-      authService.getUserByToken().subscribe().add(resolve);
-    });
   };
 }
 
@@ -30,6 +28,7 @@ function appInitializer(authService: AuthService) {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    
     BrowserModule,
     BrowserAnimationsModule,
     SplashScreenModule,
@@ -47,6 +46,7 @@ function appInitializer(authService: AuthService) {
     // #fake-end#
     AppRoutingModule,
     InlineSVGModule.forRoot(),
+    ToastrModule.forRoot(),
     NgbModule,
   ],
   providers: [

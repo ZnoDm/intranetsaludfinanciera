@@ -1,0 +1,14 @@
+
+#recorridoTutorial {
+    width: 230px;
+    height: 60px;
+    right: -230px;
+    transition: right 1.2s;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: #1A1A27;
+  }
+  
+#recorridoTutorial:hover {
+    right: 0px;
+}

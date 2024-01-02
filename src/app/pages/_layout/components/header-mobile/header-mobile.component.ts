@@ -1,5 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { LayoutService } from '../../../../_metronic/core';
+import { Observable } from 'rxjs';
+import { AuthService, UserModel } from 'src/app/modules/auth';
 
 @Component({
   selector: 'app-header-mobile',
@@ -12,7 +14,14 @@ export class HeaderMobileComponent implements OnInit, AfterViewInit {
   headerMenuSelfDisplay = true;
   headerMobileClasses = '';
   headerMobileAttributes = {};
-  constructor(private layout: LayoutService) {}
+  extrasUserLayout: 'offcanvas' | 'dropdown';
+  
+  user$: Observable<UserModel>;
+
+
+  constructor(private layout: LayoutService, private auth: AuthService) {
+    this.user$ = this.auth.currentUserSubject.asObservable();
+  }
 
   ngOnInit(): void {
     // build view by layout config settings
@@ -26,6 +35,7 @@ export class HeaderMobileComponent implements OnInit, AfterViewInit {
     this.headerMenuSelfDisplay = this.layout.getProp(
       'header.menu.self.display'
     );
+    this.extrasUserLayout = this.layout.getProp('extras.user.layout');
   }
 
   ngAfterViewInit() {

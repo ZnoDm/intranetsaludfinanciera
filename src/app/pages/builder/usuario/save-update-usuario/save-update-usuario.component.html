@@ -1,0 +1,108 @@
+<div class="modal-content modal-aspire">
+	<div class="modal-header">
+		<div class="modal-title h4" id="example-modal-sizes-title-lg">
+			<ng-container>
+				<ng-container *ngIf="idUsuario > 0">Editar</ng-container>
+				<ng-container *ngIf="idUsuario === 0">Nuevo</ng-container>
+				Usuario
+				<ng-container *ngIf="idUsuario > 0">'{{ item.login }}'</ng-container>
+			</ng-container>
+		</div>
+	</div>
+	<div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+		<ng-container *ngIf="isLoading$ | async">
+			<div class="overlay-layer bg-transparent">
+				<div class="spinner spinner-lg spinner-success"></div>
+			</div>
+		</ng-container>
+
+		<ng-container>
+			<form action="#" class="form form-label-right" [formGroup]="formGroup">
+				<div class="form-group">
+					<div class="row">
+						<div class="col-lg-12">
+							<label>Trabajador</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Trabajador" name="Trabajador"
+								[searchable]="true" placeholder="Trabajador" [class.is-invalid]="isControlInvalid('Trabajador')">
+								<ng-option *ngFor="let item of array_trabajadores" [value]="item.Trabajador">
+									{{item.NombreTrabajador}}
+								</ng-option>
+							</ng-select>
+							<div class="feedback" *ngIf="!formGroup.controls['Trabajador'].value">Por favor, seleccionar un
+								<b>Trabajador</b>
+							</div>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'Trabajador')"> Trabajador es
+								obligatorio. </div>
+						</div>
+					</div>
+					<br>
+
+					<div class="row">
+						<div class="col-lg-12">
+							<label>Alumno</label>
+							<ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Alumno" name="Alumno"
+								[searchable]="true" placeholder="Alumno" [class.is-invalid]="isControlInvalid('Alumno')">
+								<ng-option *ngFor="let item of array_alumnos" [value]="item.Alumno">
+									{{item.NombreAlumno}}
+								</ng-option>
+							</ng-select>
+							<div class="feedback" *ngIf="!formGroup.controls['Alumno'].value">Por favor, seleccionar un
+								<b>Alumno</b>
+							</div>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'Alumno')"> Alumno es
+								obligatorio. </div>
+						</div>
+					</div>
+					<br>
+
+					<div class="row">
+						<div class="col-lg-12">
+							<label>Login</label>
+							<input type="text" class="custom-input form-control form-control-lg form-control-solid" name="Login"
+								placeholder="Login" autocomplete="off" [class.is-invalid]="isControlInvalid('Login')"
+								[class.is-valid]="isControlValid('Login')" formControlName="Login" />
+							<div class="feedback" *ngIf="!formGroup.controls['Login'].value">Por favor, seleccionar un <b>Login</b>
+							</div>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'Login')"> Login es obligatorio. </div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<label>Password</label>
+							<input type="text" class="custom-input form-control form-control-lg form-control-solid" name="Password"
+								placeholder="Password" autocomplete="off" [class.is-invalid]="isControlInvalid('Password')"
+								[class.is-valid]="isControlValid('Password')" formControlName="Password" />
+							<div class="feedback" *ngIf="!formGroup.controls['Password'].value">Por favor, seleccionar un
+								<b>Password</b>
+							</div>
+							<div class="invalid-feedback" *ngIf="controlHasError('required', 'Password')"> Password es obligatorio.
+							</div>
+						</div>
+					</div>
+					<br>
+
+					<div class="row">
+						<div class="col-lg-12">
+							<label class="form-label">Activo</label>
+							<span class="switch">
+								<label>
+									<input type="checkbox" name="Activo" formControlName="Activo">
+									<span></span>
+								</label>
+							</span>
+						</div>
+					</div>
+				</div>
+			</form>
+		</ng-container>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+
+		<ng-container>
+			<button type="submit" class="btn btn-primary btn-elevate" (click)="save()" [disabled]="formGroup.invalid">
+				Guardar
+			</button>
+		</ng-container>
+	</div>
+</div>

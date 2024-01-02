@@ -6,7 +6,7 @@
 
 <!--begin::Toolbar-->
 <div class="d-flex align-items-center">
-	<ng-container *ngIf="asideSelfDisplay">
+	<ng-container >
 		<!--begin::Aside Mobile Toggle-->
 		<button class="btn p-0 burger-icon burger-icon-left" id="kt_aside_mobile_toggle">
 			<span></span>
@@ -14,18 +14,33 @@
 		<!--end::Aside Mobile Toggle-->
 	</ng-container>
 
-	<ng-container *ngIf="headerMenuSelfDisplay">
-		<!--begin::Header Menu Mobile Toggle-->
-		<button class="btn p-0 burger-icon ml-4" id="kt_header_mobile_toggle">
-			<span></span>
-		</button>
-		<!--end::Header Menu Mobile Toggle-->
-	</ng-container>
 
-	<!--begin::Topbar Mobile Toggle-->
-	<button class="btn btn-hover-text-primary p-0 ml-2" id="kt_header_mobile_topbar_toggle">
-		<span [inlineSVG]="'./assets/media/svg/icons/General/User.svg'" cacheSVG="true" class="svg-icon svg-icon-xl"></span>
-	</button>
+	<ng-container >
+		<!--begin::User-->
+		<ng-container *ngIf="user$ | async as _user">
+		  <div class="dropdown" ngbDropdown placement="bottom-right">
+			<div class="topbar-item" data-toggle="dropdown" data-offset="0px,0px" ngbDropdownToggle>
+			  <div class="btn btn-icon w-auto btn-clean d-flex align-items-center btn-lg px-2">
+				<span class="text-muted font-weight-bold font-size-base d-none d-md-inline mr-1">Hi,</span>
+				<span
+				  class="text-dark-50 font-weight-bolder font-size-base d-none d-md-inline mr-3">{{ _user.fullname}}</span>
+				<span class="symbol symbol-35 symbol-light-success">
+				  <span class="symbol-label font-size-h5 font-weight-bold">{{
+					_user.fullname
+				  }}</span>
+				</span>
+			  </div>
+			</div>
+			<!--end::Toggle-->
+			<!--begin::Dropdown-->
+			<div ngbDropdownMenu
+			  class="dropdown-menu p-0 m-0 dropdown-menu-right dropdown-menu-anim-up dropdown-menu-lg p-0">
+			  <app-user-dropdown-inner></app-user-dropdown-inner>
+			</div>
+		  </div>
+		  <!--end::Dropdown-->
+		</ng-container>
+	</ng-container>
 	<!--end::Topbar Mobile Toggle-->
 </div>
 <!--end::Toolbar-->

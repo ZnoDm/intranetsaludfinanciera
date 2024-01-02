@@ -5,6 +5,7 @@ import {LoginComponent} from './login/login.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {ForgotPasswordComponent} from './forgot-password/forgot-password.component';
 import {LogoutComponent} from './logout/logout.component';
+import { NoLoggedInGuardGuard } from 'src/app/shared/guards/no-logged-in-guard.guard';
 
 
 const routes: Routes = [
@@ -15,21 +16,23 @@ const routes: Routes = [
       {
         path: '',
         redirectTo: 'login',
-        pathMatch: 'full'
+        pathMatch: 'full',
+        canActivate: [NoLoggedInGuardGuard],
       },
       {
         path: 'login',
         component: LoginComponent,
-        data: {returnUrl: window.location.pathname}
+        data: {returnUrl: window.location.pathname},
+        canActivate: [NoLoggedInGuardGuard],
       },
-      {
+    /*   {
         path: 'registration',
         component: RegistrationComponent
       },
       {
         path: 'forgot-password',
         component: ForgotPasswordComponent
-      },
+      }, */
       {
         path: 'logout',
         component: LogoutComponent

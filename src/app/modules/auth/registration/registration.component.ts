@@ -86,7 +86,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    this.hasError = false;
+  /*   this.hasError = false;
     const result = {};
     Object.keys(this.f).forEach(key => {
       result[key] = this.f[key].value;
@@ -103,7 +103,7 @@ export class RegistrationComponent implements OnInit, OnDestroy {
           this.hasError = true;
         }
       });
-    this.unsubscribe.push(registrationSubscr);
+    this.unsubscribe.push(registrationSubscr); */
   }
 
   ngOnDestroy() {

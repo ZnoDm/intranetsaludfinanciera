@@ -30,24 +30,23 @@
     <!--end::Title-->
 
     <!-- begin::Alert info-->
-   <!--  <ng-container *ngIf="!hasError">
+   <ng-container *ngIf="hasError">
       <div class="mb-10 alert alert-custom alert-light-info alert-dismissible">
         <div class="alert-text">
-          Use account <strong>{{ defaultAuth.email }}</strong> and password
-          <strong>{{ defaultAuth.password }}</strong> to continue.
+          {{mesageError}}
         </div>
       </div>
-    </ng-container> -->
+    </ng-container>
     <!-- end::Alert info-->
 
     <!-- begin::Alert error-->
-    <ng-container *ngIf="hasError">
+   <!--  <ng-container *ngIf="hasError">
       <div
         class="mb-10 alert alert-custom alert-light-danger alert-dismissible"
       >
-        <div class="alert-text">The login details are incorrect</div>
+        <div class="alert-text">{{mesageError}}</div>
       </div>
-    </ng-container>
+    </ng-container> -->
     <!-- end::Alert error-->
 
     <!--begin::Form group-->
@@ -156,8 +155,8 @@
       >
 
       <ng-container *ngIf="isLoading$ | async; else inactive">
-        <div class="text-center py-4">
-          <span class="spinner spinner-dark"></span>
+        <div class="text-center py-4 mr-3">
+          <span class="spinner spinner-light"></span>
         </div>
       </ng-container>
       <ng-template #inactive>

@@ -1,0 +1,268 @@
+<ng-container >
+    <div id="step_contentPersonal" class="card card-custom card-stretch" [formGroup]="formDatosPersonales">
+      
+      <!--begin::Header-->
+      <div class="card-header py-3">
+        <div class="card-title align-items-start flex-column">
+          <h3 class="card-label font-weight-bolder ">Informacion Personal</h3>
+          <span class="font-weight-bold font-size-sm mt-1" style="color: #0E0D12;" >Aquí puedes ver tu información</span>
+        </div>
+        <div class="card-toolbar">
+            <button type="submit"  class="btn btn-success mr-2" (click) ="save()">Actualizar Informacion</button>   
+        </div>
+      </div>
+      <!--end::Header-->
+      <!--begin::Form-->
+      <div class="form">
+        <!--begin::Body-->
+        <div class="card-body">
+          
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Nombres</label>
+            <div class="col-lg-8 col-xl-7">
+              <input class="form-control form-control-solid"
+                type="text"
+                formControlName="nombres"
+                [class.is-invalid]="isControlInvalid('nombres')"
+                [class.is-valid]="isControlValid('nombres')"
+              />
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'nombres')">El nombre es obligatorio. </div> 
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Apellido Paterno</label>
+            <div class="col-lg-8 col-xl-7">
+              <input class=" form-control form-control-solid"
+                type="text"
+                formControlName="apePaterno"
+                [class.is-invalid]="isControlInvalid('apePaterno')"
+                [class.is-valid]="isControlValid('apePaterno')"
+              />
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'apePaterno')">El apellido paterno es obligatorio. </div>
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Apellido Materno</label>
+            <div class="col-lg-8 col-xl-7">
+              <input class=" form-control  form-control-solid"
+                type="text"
+                formControlName="apeMaterno"
+                [class.is-invalid]="isControlInvalid('apeMaterno')"
+                [class.is-valid]="isControlValid('apeMaterno')"
+              />
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'apeMaterno')">El apellido materno es obligatorio. </div>
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Fecha Nacimiento</label>
+            <div class="col-lg-8 col-xl-7">
+              <input type="date"
+              formControlName="fechaNacimiento"
+              name="fechaNacimiento"
+              class="form-control form-control-solid">
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'fechaNacimiento')"> Fecha Nacimiento es obligatorio. </div>
+            </div>
+          </div>
+
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Género</label>
+            <div class="col-lg-8 col-xl-7">
+              <ng-select #agreeSelect
+                [searchable]="false"
+                formControlName="idSexo"
+                placeholder="Selecciona un género" >
+                <ng-option *ngFor="let item of array_sexos" [value]="item.ValorSexo">
+                  {{item.NombreSexo}}
+                </ng-option>
+              </ng-select>
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'idSexo')"> Género es obligatorio. </div>
+            </div>
+          </div>
+
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Tipo de documento</label>
+            <div class="col-lg-8 col-xl-7">
+              <ng-select #agreeSelect
+              [searchable]="false"
+              formControlName="idTipoDocumentoIdentidad"
+              placeholder="Selecciona">
+                <ng-option *ngFor="let tipoDocIdentidad of this.array_tipoDocumentoIdentidad" [value]="tipoDocIdentidad.ValorDocIdentidad">
+                  {{tipoDocIdentidad.NombreDocIdentidad}}
+                </ng-option>
+              </ng-select>
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'idTipoDocumentoIdentidad')"> Tipo Documento es obligatorio. </div>
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Número de documento</label>
+            <div class="col-lg-8 col-xl-7">
+              <input type="text"
+              formControlName="documentoIdentidad"
+              name="documentoIdentidad"
+              maxlength="20"
+              class="form-control  form-control-solid"
+              placeholder="Escribe tu número de documento">
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'documentoIdentidad')"> Documento de Identidad es obligatorio. </div>
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('maxlength', 'documentoIdentidad')"> Supera la longitud máxima de 20 caracteres. </div>
+            </div>
+          </div>
+
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Telefono</label>
+            <div class="col-lg-8 col-xl-7">
+              <div class="input-group input-group-lg input-group-solid">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fa fa-phone"></i>
+                  </span>
+                </div>
+                <input type="text"
+                  class=" form-control  form-control-solid"          
+                  placeholder="telefono"
+                  formControlName="telefono"
+                  [class.is-invalid]="isControlInvalid('telefono')"
+                  [class.is-valid]="isControlValid('telefono')"
+                />
+                <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'telefono')">El telefono es obligatorio.</div>
+              </div>
+              
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Celular</label>
+            <div class="col-lg-8 col-xl-7">
+              <div class="input-group input-group-solid">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fas fa-mobile-alt"></i>
+                  </span>
+                </div>
+                <input type="text"
+                  class=" form-control  form-control-solid" 
+                  placeholder="Celular"
+                  formControlName="celular"
+                  [class.is-invalid]="isControlInvalid('celular')"
+                    [class.is-valid]="isControlValid('celular')"
+                />
+              </div>
+              
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Email</label>
+            <div class="col-lg-8 col-xl-7">
+              <div class="input-group input-group-solid">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <i class="fa fa-at"></i>
+                  </span>
+                </div>
+                <input type="email"
+                  class="  form-control  form-control-solid"
+                  placeholder="Email"
+                  formControlName="email"
+                  [class.is-invalid]="isControlInvalid('email')"
+                [class.is-valid]="isControlValid('email')"
+                />
+              </div>
+            </div>
+          </div>
+          
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Departamento</label>
+            <div class="col-lg-8 col-xl-7">
+              <ng-select  #agreeSelect
+              [searchable]="false"
+              formControlName="idDepartamento"
+              placeholder="Selecciona un departamento"
+              (change)="getProvincia($event,null)">
+                <ng-option *ngFor="let item of array_departamentos" [value]="item.Departamento">
+                    {{item.NombreDepartamento}}
+                </ng-option>
+              </ng-select>
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'idDepartamento')"> Departamento es obligatorio. </div>
+            </div>
+          </div>
+
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Provincia</label>
+            <div class="col-lg-8 col-xl-7">
+              <ng-select  #agreeSelect
+              [searchable]="false"
+              formControlName="idProvincia"
+              placeholder="Selecciona una provincia"
+              (change)="getDistrito($event,null)">
+                <ng-option *ngFor="let item of array_provincias" [value]="item.Provincia">
+                    {{item.NombreProvincia}}
+                </ng-option>
+                <ng-option *ngIf="array_provincias.length<=0" [disabled]="true">
+                    Seleccionar una departamento
+                </ng-option>
+              </ng-select>
+              <div class=formDatosPersonales *ngIf="controlHasError('required', 'idProvincia')"> Provincia es obligatorio. </div>
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Distrito</label>
+            <div class="col-lg-8 col-xl-7">
+              <ng-select  #agreeSelect
+              [searchable]="false"
+              formControlName="idDistrito"
+              placeholder="Selecciona una distrito">
+                <ng-option *ngFor="let item of array_distritos" [value]="item.Distrito">
+                    {{item.NombreDistrito}}
+                </ng-option>
+                <ng-option *ngIf="array_distritos.length<=0" [disabled]="true">
+                    Seleccionar una provincia
+                </ng-option>
+              </ng-select>
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'idDistrito')"> Distrito es obligatorio. </div>
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">Estado Civil</label>
+            <div class="col-lg-8 col-xl-7">
+              <ng-select  #agreeSelect
+              [searchable]="false"
+              formControlName="idEstadoCivil"
+              placeholder="Selecciona tu estado civil">
+                <ng-option *ngFor="let item of array_estadoCivil" [value]="item.ValorEstadoCivil">
+                    {{item.NombreEstadoCivil}}
+                </ng-option>
+              </ng-select>
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'idEstadoCivil')"> Estado Civil es obligatorio. </div>
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4">
+            <label class="col-xl-4 col-lg-4 col-form-label">¿Tiene hijos?</label>
+            <div class="col-lg-8 col-xl-7">
+              <div class="d-flex justify-content-center align-items-center p-4">
+                <label class="form-label mr-5 mb-0">
+                  <input type="radio" value="Si" formControlName="tieneHijos" (change)="radioHasHijos($event)" class="form-check-input"> Sí tengo
+                </label>
+                <label class="form-label ml-5 mb-0">
+                  <input type="radio" value="No" formControlName="tieneHijos" (change)="radioHasHijos($event)" class="form-check-input"> No tengo
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row py-3 py-lg-4" *ngIf="formDatosPersonales.get('tieneHijos').value === 'Si'">
+            <label class="col-xl-4 col-lg-4 col-form-label">Cantidad de hijos:</label>
+            <div class="col-lg-8 col-xl-7">
+              <input type="number"
+              formControlName="cantidadHijos"
+              class="form-control form-control-solid">
+
+              <div class="invalid-feedback d-block" *ngIf="controlHasError('required', 'cantidadHijos')">
+                La cantidad de hijos es requerida.
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!--end::Body-->
+      </div>
+      <!--end::Form-->
+    </div>
+</ng-container>
+
