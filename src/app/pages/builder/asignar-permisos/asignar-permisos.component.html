@@ -1,0 +1,63 @@
+<div class="card card-custom gutter-b mt-5">
+  <div class="card-header">
+    <div class="card-title">
+      <h3 class="card-label">Permisos</h3>
+    </div>
+    <!-- <div class="card-toolbar">
+        <button type="button" class="btn btn-primary" (click)="addTrabajador()">Nueva Trabajador</button>
+      </div> -->
+  </div>
+  <div class="card-body">
+    <!-- begin: Filtration form -->
+    <div class="form form-label-right">
+      <div class="form-group row">
+        <div class="col-lg-12">
+          <div class="row" [formGroup]="filterGroup">
+            <div class="col-lg-5">
+              <label>Rol</label>
+              <ng-select #agreeSelect [clearSearchOnAdd]="false" formControlName="Rol" [searchable]="true"
+                placeholder="Rol" (change)="changeRol($event)">
+                <ng-option *ngFor="let item of array_roles" [value]="item.id">
+                  {{item.nombre}}
+                </ng-option>
+              </ng-select>
+              <small class="form-text text-muted"><b>Filtrar</b> por Rol</small>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+
+
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center w-100">
+            <ng-container *ngIf="isLoading$ | async">
+              <mat-spinner [diameter]="24"></mat-spinner>
+            </ng-container>
+          </div>
+          <div>
+            <ng-container *ngIf="array_permisos.lenght == 0">
+              No hay data.
+            </ng-container>
+            <ng-container >
+              <div *ngFor="let item of array_permisos">
+                <label>
+                  <input type="checkbox" (change)="changeChecked(item.id,item.active)" [checked]="item.active">
+                  {{ item.nombre }}
+                </label>
+              </div>
+            </ng-container>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+  </div>
+</div>

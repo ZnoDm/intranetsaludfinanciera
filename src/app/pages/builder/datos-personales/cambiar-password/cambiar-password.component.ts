@@ -1,3 +1,4 @@
+import { PersonService } from './../../../../shared/services/person.service';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { forkJoin, Subscription } from 'rxjs';
@@ -15,7 +16,7 @@ export class CambiarPasswordComponent implements OnInit {
   subscriptions: Subscription[] = [];
   constructor(
     private fb: FormBuilder,
-    // public datosPersonales_s: DatosPersonalesService,
+    public personService: PersonService,
     public toastr: ToastrManager
   ) { }
 
@@ -37,8 +38,9 @@ export class CambiarPasswordComponent implements OnInit {
   preparePassword(){
     const formData = this.formPassword.value;
     return {
-      PasswordActual: formData.PasswordActual,
-      password: formData.password
+      oldPassword: formData.PasswordActual,
+      newPassword: formData.password,
+      confirmPassword: formData.cPassword
     }
   }
 
@@ -60,37 +62,37 @@ export class CambiarPasswordComponent implements OnInit {
 		}
 
     let data = this.preparePassword();
-    // this.datosPersonales_s.CambiarPassword(data).subscribe(
-    //   (data: any) => {
+    this.personService.updatePassword(data).subscribe(
+      (data: any) => {
         
-    //        if (data[0].Ok > 0) {
-    //          this.toastr.successToastr(data[0].Message, 'Correcto!', {
-    //            toastTimeout: 2000,
-    //            showCloseButton: true,
-    //            animate: 'fade',
-    //            progressBar: true
-    //          });
+           if (data.ok > 0) {
+             this.toastr.successToastr(data.message, 'Correcto!', {
+               toastTimeout: 2000,
+               showCloseButton: true,
+               animate: 'fade',
+               progressBar: true
+             });
             
-    //        } else {
+           } else {
 
-    //         this.toastr.errorToastr(data[0].Message, 'Error!', {
-    //            toastTimeout: 2000,
-    //            showCloseButton: true,
-    //            animate: 'fade',
-    //            progressBar: true
-    //          });
-    //        }
-    //      }, (errorServicio) => {
+            this.toastr.errorToastr(data.message, 'Error!', {
+               toastTimeout: 2000,
+               showCloseButton: true,
+               animate: 'fade',
+               progressBar: true
+             });
+           }
+         }, (errorServicio) => {
 
-    //        this.toastr.errorToastr('Ocurrio un error.', 'Error!', {
-    //          toastTimeout: 2000,
-    //          showCloseButton: true,
-    //          animate: 'fade',
-    //          progressBar: true
-    //        });
-    //        ;
-    //      }
-    //   );
+           this.toastr.errorToastr(errorServicio.message, 'Error!', {
+             toastTimeout: 2000,
+             showCloseButton: true,
+             animate: 'fade',
+             progressBar: true
+           });
+           ;
+         }
+      );
   }
 
 

@@ -22,17 +22,26 @@ import { MatTreeModule } from '@angular/material/tree';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { InlineSVGModule } from 'ng-inline-svg';
 import { CRUDTableModule } from 'src/app/_metronic/shared/crud-table';
-import { PermisosComponent } from './permisos/permisos.component';
+
 import { DatosPersonalesComponent } from './datos-personales/datos-personales.component';
 import { InformacionPersonalComponent } from './datos-personales/informacion-personal/informacion-personal.component';
 import { CambiarPasswordComponent } from './datos-personales/cambiar-password/cambiar-password.component';
 import { PerfilOpcionesComponent } from './datos-personales/perfil-opciones/perfil-opciones.component';
+import { PermisoComponent } from './permiso/permiso.component';
+import { SaveUpdatePermisoModalComponent } from './permiso/save-update-permiso-modal/save-update-permiso-modal.component';
+import { AsignarPermisosComponent } from './asignar-permisos/asignar-permisos.component';
 @NgModule({
   declarations: [
     BuilderComponent,
+    
     RolComponent,
     SaveUpdateRolModalComponent,
-    PermisosComponent,
+    
+    PermisoComponent,
+    SaveUpdatePermisoModalComponent,
+    
+    AsignarPermisosComponent,
+    
     DatosPersonalesComponent,
     InformacionPersonalComponent,
     CambiarPasswordComponent,

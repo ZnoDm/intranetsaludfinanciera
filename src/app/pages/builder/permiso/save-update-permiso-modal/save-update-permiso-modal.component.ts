@@ -4,19 +4,20 @@ import { CustomersService } from 'src/app/modules/e-commerce/_services';
 import { Subscription } from 'rxjs';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
-import { RolService } from 'src/app/shared/services/rol.service';
+import { PermisoService } from 'src/app/shared/services/permiso.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
-  selector: 'app-save-update-rol-modal',
-  templateUrl: './save-update-rol-modal.component.html',
-  styleUrls: ['./save-update-rol-modal.component.scss'],
+  selector: 'app-save-update-permiso-modal',
+  templateUrl: './save-update-permiso-modal.component.html',
+  styleUrls: ['./save-update-permiso-modal.component.scss'],
   providers: [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
-export class SaveUpdateRolModalComponent implements OnInit {
+export class SaveUpdatePermisoModalComponent implements OnInit {
+
   @Input() item: any;
   isLoading$;
   id: number = 0;
@@ -24,12 +25,14 @@ export class SaveUpdateRolModalComponent implements OnInit {
   private subscriptions: Subscription[] = [];
 
   constructor(
+    private customersService: CustomersService,
     private fb: FormBuilder, 
     public modal: NgbActiveModal,
-    public rol_s: RolService,
+    public permiso_s: PermisoService,
     public toastr: ToastrManager) { }
 
   ngOnInit(): void {
+    this.isLoading$ = this.customersService.isLoading$;
     this.loadCustomer();
   }
   
@@ -44,7 +47,7 @@ export class SaveUpdateRolModalComponent implements OnInit {
       this.id = this.item.id;
       this.loadForm();  
       this.formGroup.controls.Nombre.setValue(this.item.nombre)
-      this.formGroup.controls.Descripcion.setValue(this.item.descripcion);        
+      this.formGroup.controls.Url.setValue(this.item.url);        
     } else {
       
       this.id = 0;
@@ -54,14 +57,14 @@ export class SaveUpdateRolModalComponent implements OnInit {
   loadForm() {
     this.formGroup = this.fb.group({
       Nombre: [null, Validators.compose([Validators.required])],
-      Descripcion: [null, Validators.compose([Validators.required])],
+      Url: [null, Validators.compose([Validators.required])],
     });
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;
     return{    
         nombre: formData.Nombre,
-        descripcion: formData.Descripcion,    
+        url: formData.Url,    
       }
    
   }
@@ -69,7 +72,7 @@ export class SaveUpdateRolModalComponent implements OnInit {
   save() {
     let data = this.prepareCustomer();
     if(this.id == 0){
-      this.rol_s.create(data).subscribe(
+      this.permiso_s.create(data).subscribe(
         (data:any) => {
           if (data.ok > 0) {
             this.toastr.successToastr(data.message, 'Correcto!', {
@@ -100,7 +103,7 @@ export class SaveUpdateRolModalComponent implements OnInit {
         }
       );
     }else{
-      this.rol_s.update(this.id,data).subscribe(
+      this.permiso_s.update(this.id,data).subscribe(
         (data:any) => {
           if (data.ok > 0) {
             this.toastr.successToastr(data.message, 'Correcto!', {

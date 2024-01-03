@@ -9,12 +9,12 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class RolService {
+export class PermisoService {
 
   isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
 
-  apiUrl = environment.apiUrl + '/rol';
+  apiUrl = environment.apiUrl + '/permiso';
   constructor(
       private httpClient: HttpClient,
       private headerBasicAuthorization: HeaderBasicAuthorizationService,
@@ -23,35 +23,8 @@ export class RolService {
       this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
-
-  asignarPermisoByRol(roleId: number, permisoId: number, isActive: boolean): Observable<any> {
-    this.isLoadingSubject.next(true);
-    const body = { isActive };
-    return this.httpClient.put<any>(`${this.apiUrl}/${roleId}/permisos/${permisoId}`, body,
-      { headers: this.headerBasicAuthorization.getHeaders()}
-    ).pipe(
-      map(data => data),
-      catchError((err) => {
-        return of(err);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
-  }
-
-
-  obtenerNavegacionPorRol(idRol:number) {
-    this.isLoadingSubject.next(true);
-    return this.httpClient.get<any>(`${this.apiUrl}/${idRol}/permisos`,
-      { headers: this.headerBasicAuthorization.getHeaders()}
-    ).pipe( 
-      map( data => data ),
-      catchError((err) => {
-        return of(err);
-      }),
-      finalize(() => this.isLoadingSubject.next(false))
-    );
-  }
-
+ 
+ 
   findAll(): Observable<any> {
     this.isLoadingSubject.next(true);
     return this.httpClient.get<any>(`${this.apiUrl}`,

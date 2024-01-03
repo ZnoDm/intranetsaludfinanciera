@@ -7,17 +7,17 @@ import { Observable, Subscription } from 'rxjs';
 import { TableResponseModel } from '../../../_metronic/shared/crud-table/models/table.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { RolService } from 'src/app/shared/services/rol.service';
-import { SaveUpdateRolModalComponent } from './save-update-rol-modal/save-update-rol-modal.component';
+import { PermisoService } from 'src/app/shared/services/permiso.service';
+import { SaveUpdatePermisoModalComponent } from './save-update-permiso-modal/save-update-permiso-modal.component';
 import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.component';
 
 
 @Component({
-    selector: 'app-rol',
-    templateUrl: './rol.component.html',
-    styleUrls: ['./rol.component.scss'],
+    selector: 'app-permiso',
+    templateUrl: './permiso.component.html',
+    styleUrls: ['./permiso.component.scss'],
 })
-export class RolComponent implements OnInit {
+export class PermisoComponent implements OnInit {
 
     
   load_data: boolean = true;
@@ -27,29 +27,29 @@ export class RolComponent implements OnInit {
   searchGroup: FormGroup;
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Nro', 'Nombre', 'Descripcion', 'actions'];
+  displayedColumns: string[] = ['Nro', 'Nombre', 'Url', 'actions'];
 
   @ViewChild(MatSort) MatSort: MatSort;
   @ViewChild('matPaginator', { static: true }) paginator: MatPaginator;
 
   array_data: TableResponseModel<any>;
   isLoading$: Observable<boolean>;
-
+  
   private subscriptions: Subscription[] = [];
 
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public rolService: RolService,
+    public permisoService: PermisoService,
     public toastr: ToastrManager,
     private chgRef: ChangeDetectorRef,) { 
-      this.isLoading$ = this.rolService.isLoading$;
+      this.isLoading$ = this.permisoService.isLoading$;
   }
 
   ngOnInit(): void {
     this.listData = new MatTableDataSource([]);
     this.searchForm();
-    this.getRoles();
+    this.getPermisoes();
   }
 
   ngOnDestroy(): void {
@@ -57,20 +57,20 @@ export class RolComponent implements OnInit {
   }
 
 
-  
+
   searchForm() {
     this.searchGroup = this.fb.group({
       searchTerm: [''],
     });    
   }
 
-  getRoles() {
+  getPermisoes() {
     this.listData = new MatTableDataSource([]);
     this.searchBan = false;
     this.load_data = false;
     this.no_data = true;
 
-    this.rolService.findAll().subscribe(
+    this.permisoService.findAll().subscribe(
       (data:any) => {
         this.load_data = true;
         this.searchBan = false;
@@ -92,20 +92,20 @@ export class RolComponent implements OnInit {
   }
 
   create(item) {
-    const modalRef = this.modalService.open(SaveUpdateRolModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getRoles();     
+      this.getPermisoes();     
     }, (reason) => {
      
     }); 
   }
 
   edit(item) {
-    const modalRef = this.modalService.open(SaveUpdateRolModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getRoles();
+      this.getPermisoes();
     }, (reason) => {
      
     }); 
@@ -124,14 +124,14 @@ export class RolComponent implements OnInit {
   delete(item) {
     const modalRef = this.modalService.open(DeleteModalComponent);
     modalRef.componentInstance.id = item.idCurso;
-    modalRef.componentInstance.titulo = 'Eliminar Rol';
-    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el rol ${item.nombre} ?`;
-    modalRef.componentInstance.msgloading = 'Eliminando Rol...';
+    modalRef.componentInstance.titulo = 'Eliminar Permiso';
+    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el permiso ${item.nombre} ?`;
+    modalRef.componentInstance.msgloading = 'Eliminando Permiso...';
     modalRef.componentInstance.service = ()=>{
-      return this.rolService.delete(item.id);
+      return this.permisoService.delete(item.id);
     };
     modalRef.result.then((result) => {
-      this.getRoles();
+      this.getPermisoes();
     }, (reason) => {
       
     });  

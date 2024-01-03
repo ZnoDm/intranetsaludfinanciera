@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/modules/auth';
 import { JwtService } from 'src/app/shared/services/jwt.service';
 @Component({
   selector: 'app-perfil-opciones',
@@ -9,11 +10,12 @@ export class PerfilOpcionesComponent implements OnInit {
 
   jwtUser: any = null;
   constructor(
-    private jwtService: JwtService
+    private auth: AuthService
   ) { }
 
   ngOnInit(): void {
-    this.jwtUser = this.jwtService.getUser();
+    this.jwtUser = this.auth.currentUserSubject.value;
+    console.log(this.jwtUser)
   }
 
 }

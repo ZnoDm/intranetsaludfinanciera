@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RolComponent } from './rol/rol.component';
-import { LayoutComponent } from '../_layout/layout.component';
-import { DatosPersonalesComponent } from './datos-personales/datos-personales.component';
 import { InformacionPersonalComponent } from './datos-personales/informacion-personal/informacion-personal.component';
 import { CambiarPasswordComponent } from './datos-personales/cambiar-password/cambiar-password.component';
+import { DatosPersonalesComponent } from './datos-personales/datos-personales.component';
+import { PermisoComponent } from './permiso/permiso.component';
+import { AsignarPermisosComponent } from './asignar-permisos/asignar-permisos.component';
 
 const routes: Routes = [
   {
@@ -20,22 +21,29 @@ const routes: Routes = [
         path: 'rol',
         component: RolComponent
       },
-      {
-        path: 'permiso',
-        component: RolComponent
-      },
-      { path: 'datosPersonales', redirectTo: '/datosPersonales/informacionPersonal', pathMatch: 'full'},
 
       {
-				path: 'datosPersonales',
+        path: 'permiso',
+        component: PermisoComponent
+      },
+
+      {
+        path: 'asignar-permisos',
+        component: AsignarPermisosComponent
+      },
+
+      { path: 'profile', redirectTo: '/profile/informacion-personal', pathMatch: 'full'},
+
+      {
+				path: 'profile',
 				component: DatosPersonalesComponent,
         children: [
           {
-            path: 'informacionPersonal',
+            path: 'informacion-personal',
             component: InformacionPersonalComponent,
           },
           {
-            path: 'cambiarContraseña',
+            path: 'change-password',
             component: CambiarPasswordComponent,
           },
           
