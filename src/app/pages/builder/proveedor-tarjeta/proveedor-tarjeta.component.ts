@@ -7,17 +7,17 @@ import { Observable, Subscription } from 'rxjs';
 import { TableResponseModel } from '../../../_metronic/shared/crud-table/models/table.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { PermisoService } from 'src/app/shared/services/permiso.service';
-import { SaveUpdatePermisoModalComponent } from './save-update-permiso-modal/save-update-permiso-modal.component';
+import { ProveedorTarjetaService } from 'src/app/shared/services/proveedor-tarjeta.service';
+import { SaveUpdateProveedorTarjetaModalComponent } from './save-update-proveedor-tarjeta-modal/save-update-proveedor-tarjeta-modal.component';
 import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.component';
 
 
 @Component({
-    selector: 'app-permiso',
-    templateUrl: './permiso.component.html',
-    styleUrls: ['./permiso.component.scss'],
+    selector: 'app-proveedor-tarjeta',
+    templateUrl: './proveedor-tarjeta.component.html',
+    styleUrls: ['./proveedor-tarjeta.component.scss'],
 })
-export class PermisoComponent implements OnInit {
+export class ProveedorTarjetaComponent implements OnInit {
 
     
   load_data: boolean = true;
@@ -40,16 +40,16 @@ export class PermisoComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public permisoService: PermisoService,
+    public proveedorTarjetaService: ProveedorTarjetaService,
     public toastr: ToastrManager,
     private chgRef: ChangeDetectorRef,) { 
-      this.isLoading$ = this.permisoService.isLoading$;
+      this.isLoading$ = this.proveedorTarjetaService.isLoading$;
   }
 
   ngOnInit(): void {
     this.listData = new MatTableDataSource([]);
     this.searchForm();
-    this.getPermisoes();
+    this.getProveedorTarjetaes();
   }
 
   ngOnDestroy(): void {
@@ -64,13 +64,13 @@ export class PermisoComponent implements OnInit {
     });    
   }
 
-  getPermisoes() {
+  getProveedorTarjetaes() {
     this.listData = new MatTableDataSource([]);
     this.searchBan = false;
     this.load_data = false;
     this.no_data = true;
 
-    this.permisoService.findAll().subscribe(
+    this.proveedorTarjetaService.findAll().subscribe(
       (data:any) => {
         this.load_data = true;
         this.searchBan = false;
@@ -92,20 +92,20 @@ export class PermisoComponent implements OnInit {
   }
 
   create(item) {
-    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdateProveedorTarjetaModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getPermisoes();     
+      this.getProveedorTarjetaes();     
     }, (reason) => {
      
     }); 
   }
 
   edit(item) {
-    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdateProveedorTarjetaModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getPermisoes();
+      this.getProveedorTarjetaes();
     }, (reason) => {
      
     }); 
@@ -124,14 +124,14 @@ export class PermisoComponent implements OnInit {
   delete(item) {
     const modalRef = this.modalService.open(DeleteModalComponent);
     modalRef.componentInstance.id = item.id;
-    modalRef.componentInstance.titulo = 'Eliminar Permiso';
-    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el permiso ${item.nombre} ?`;
-    modalRef.componentInstance.msgloading = 'Eliminando Permiso...';
+    modalRef.componentInstance.titulo = 'Eliminar ProveedorTarjeta';
+    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el banco ${item.nombre} ?`;
+    modalRef.componentInstance.msgloading = 'Eliminando ProveedorTarjeta...';
     modalRef.componentInstance.service = ()=>{
-      return this.permisoService.delete(item.id);
+      return this.proveedorTarjetaService.delete(item.id);
     };
     modalRef.result.then((result) => {
-      this.getPermisoes();
+      this.getProveedorTarjetaes();
     }, (reason) => {
       
     });  

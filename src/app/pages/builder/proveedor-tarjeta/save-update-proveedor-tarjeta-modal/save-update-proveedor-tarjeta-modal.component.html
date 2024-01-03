@@ -1,0 +1,61 @@
+<div class="modal-content modal-aspire">
+    <div class="modal-header">
+      <div class="modal-title h4" id="example-modal-sizes-title-lg">
+        <ng-container>
+          <ng-container *ngIf="id > 0">Editar</ng-container>
+          <ng-container *ngIf="id === 0">Nuevo</ng-container>
+          ProveedorTarjeta
+          <ng-container *ngIf="id > 0"
+            >'{{ item.nombre }}'</ng-container
+          >
+        </ng-container>
+      </div>
+    </div>
+    <div
+      class="overlay overlay-block cursor-default modal-body"
+      style="min-height: 404px"
+    >
+      <ng-container *ngIf="isLoading$ | async">
+        <div class="overlay-layer bg-transparent">
+          <div class="spinner spinner-lg spinner-success"></div>
+        </div>
+      </ng-container>
+  
+      <ng-container>
+        <form action="#" class="form form-label-right" [formGroup]="formGroup"> 
+            <div class="form-group">
+                <div class="row">
+                  <div class="col-lg-12">
+                      <label class="form-label">Nombre</label>
+                      <input type="text" class="custom-input form-control form-control-lg form-control-solid" name="Nombre" placeholder="Nombre" autocomplete="off" [class.is-invalid]="isControlInvalid('Nombre')" [class.is-valid]="isControlValid('Nombre')" formControlName="Nombre"/>             
+                      <div class="feedback" *ngIf="!formGroup.controls['Nombre'].value">Por favor, ingresa <b>Nombre</b></div>
+                      <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre obligatorio. </div> 
+                      <div class="valid-feedback" *ngIf="isControlValid('Nombre')">Nombre correcto</div>
+                    </div>
+                </div> 
+                <br>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <label class="form-label">Path</label>
+                        <input type="text" class="custom-input form-control form-control-lg form-control-solid" name="Url" placeholder="Url" autocomplete="off" [class.is-invalid]="isControlInvalid('Url')" [class.is-valid]="isControlValid('Url')" formControlName="Url"/>             
+                        <div class="feedback" *ngIf="!formGroup.controls['Url'].value">Por favor, ingresa <b>Url</b></div>
+                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'Url')"> Url obligatoria. </div> 
+                        <div class="valid-feedback" *ngIf="isControlValid('Url')">Url correcto</div>
+                      </div>
+                  </div>                 
+            </div>                    
+          </form>
+      </ng-container>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+      
+      <ng-container>
+        <button type="submit" class="btn btn-primary btn-elevate" [disabled]="formGroup.invalid" (click)="save()">
+          Guardar
+        </button>
+      </ng-container>
+    </div>
+  </div>
+  
+

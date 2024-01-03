@@ -123,7 +123,7 @@ export class RolComponent implements OnInit {
 
   delete(item) {
     const modalRef = this.modalService.open(DeleteModalComponent);
-    modalRef.componentInstance.id = item.idCurso;
+    modalRef.componentInstance.id = item.id;
     modalRef.componentInstance.titulo = 'Eliminar Rol';
     modalRef.componentInstance.descripcion = `Esta seguro de eliminar el rol ${item.nombre} ?`;
     modalRef.componentInstance.msgloading = 'Eliminando Rol...';

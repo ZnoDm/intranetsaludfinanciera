@@ -11,27 +11,6 @@
 		<!-- begin: Filtration form -->
 		<div class="form form-label-right">
 			<div class="form-group row">
-				<div class="col-lg-8">
-					<div class="row" [formGroup]="filterGroup">
-						<div class="col-lg-4">
-							<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Tipo" (change)="getUsuarios( $event,this.filterGroup.controls.Estado.value)">
-									<ng-option *ngFor="let item of array_tipo" [value]="item.value">
-											{{item.descripcion}}
-									</ng-option>
-							</ng-select>
-							<small class="form-text text-muted"><b>Filtrar</b> por Tipo</small>
-						</div>
-
-						<div class="col-lg-4">
-							<ng-select #agreeSelect [clearSearchOnAdd]="false" [searchable]="true" formControlName="Estado" (change)="getUsuarios( this.filterGroup.controls.Tipo.value,$event)">
-									<ng-option *ngFor="let item of array_estado" [value]="item.value">
-											{{item.descripcion}}
-									</ng-option>
-							</ng-select>
-							<small class="form-text text-muted"><b>Filtrar</b> por Estado</small>
-						</div>
-					</div>
-				</div>
 				<div class="col-lg-4" [formGroup]="searchGroup">
 					<input type="text" class="custom-input form-control" name="searchText" placeholder="Buscar" value="" (keyup)="search()"
 						formControlName="searchTerm" /><small class="form-text text-muted"><b>Buscar</b> en todos los campos</small>
@@ -47,28 +26,39 @@
 							<mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
 					</ng-container>
 
-					<ng-container matColumnDef="Usuario">
-							<mat-header-cell *matHeaderCellDef mat-sort-header>USUARIO</mat-header-cell>
-							<mat-cell *matCellDef="let lesson">{{lesson.usuario.trim() || '-'}}</mat-cell>
+					<ng-container matColumnDef="email">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>EMAIL</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.email.trim() || '-'}}</mat-cell>
 					</ng-container>
 
-					<ng-container matColumnDef="DocIdentidad">
+					<ng-container matColumnDef="nombres">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRES</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{(lesson.nombres) || '-'}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="apellidos">
+							<mat-header-cell *matHeaderCellDef mat-sort-header>APELLIDOS</mat-header-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.apellidos}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="documentoIdentidad">
+						<mat-header-cell *matHeaderCellDef mat-sort-header>TIPO DOC.IDENTIDAD</mat-header-cell>
+						<mat-cell *matCellDef="let lesson">{{lesson.documentoIdentidad}}</mat-cell>
+					</ng-container>
+
+					<ng-container matColumnDef="tipoDocumentoIdentidad">
 							<mat-header-cell *matHeaderCellDef mat-sort-header>DOC.IDENTIDAD</mat-header-cell>
-							<mat-cell *matCellDef="let lesson">{{(lesson.documentoIdentidad) || '-'}}</mat-cell>
+							<mat-cell *matCellDef="let lesson">{{lesson.tipoDocumentoIdentidad}}</mat-cell>
 					</ng-container>
+					
 
-					<ng-container matColumnDef="Login">
-							<mat-header-cell *matHeaderCellDef mat-sort-header>LOGIN</mat-header-cell>
-							<mat-cell *matCellDef="let lesson">{{lesson.login}}</mat-cell>
-					</ng-container>
-
-					<ng-container matColumnDef="Estado">
+					<ng-container matColumnDef="isActive">
 							<mat-header-cell *matHeaderCellDef mat-sort-header>ACTIVO</mat-header-cell>
 							<mat-cell *matCellDef="let lesson">
 									
 									<span class="switch">
 											<label>
-													<input type="checkbox" name="Activo" [(ngModel)]="lesson.activo" (click)="enabledUsuario(lesson)">
+													<input type="checkbox" name="Activo" [(ngModel)]="lesson.isActive" (click)="enabledUsuario(lesson)">
 													<span></span>
 											</label>
 									</span>
@@ -77,13 +67,7 @@
 
 					<ng-container matColumnDef="actions">
 							<mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
-							<mat-cell *matCellDef="let lesson">                              
-									<a title="Asignar empresas y roles" class="btn btn-icon btn-light btn-hover-primary btn-sm mr-3"
-										(click)="asignar(lesson.idUsuario)">
-										<span [inlineSVG]="'./assets/media/svg/icons/General/Settings-2.svg'" cacheSVG="true"
-										class="svg-icon svg-icon-md svg-icon-primary">
-										</span> 
-									</a>
+							<mat-cell *matCellDef="let lesson">
 									<a title="Restablecer contraseña" class="btn btn-icon btn-light btn-hover-warning btn-sm mr-3"
 											(click)="reset(lesson)">
 											<span [inlineSVG]="'./assets/media/svg/icons/General/Update.svg'" cacheSVG="true"

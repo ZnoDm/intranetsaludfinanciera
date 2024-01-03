@@ -11,7 +11,8 @@ import { ToastrManager } from 'ng6-toastr-notifications';
 import { SaveUpdateUsuarioComponent } from './save-update-usuario/save-update-usuario.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { TouchSequence } from 'selenium-webdriver';
-import { AsignarRolEmpresaComponent } from './asignar-rol-empresa/asignar-rol-empresa.component';
+import { UsuarioService } from 'src/app/shared/services/usuario.service';
+import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.component';
 
 
 @Component({
@@ -20,34 +21,18 @@ import { AsignarRolEmpresaComponent } from './asignar-rol-empresa/asignar-rol-em
   styleUrls: ['./usuario.component.scss'],
 })
 export class UsuarioComponent implements OnInit { 
-  // paginator: PaginatorState;
   load_data: boolean = true;
   no_data: boolean = false;
   searchBan: boolean = false;
-  filterGroup: FormGroup;
+
   searchGroup: FormGroup;
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Nro', 'Usuario', 'DocIdentidad', 'Login','Estado', 'actions'];
+  displayedColumns: string[] = ['Nro', 'email', 'nombres', 'apellidos','tipoDocumentoIdentidad','documentoIdentidad','isActive', 'actions'];
 
   @ViewChild(MatSort) MatSort: MatSort;
-  // @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild('matPaginator', { static: true }) paginator: MatPaginator;
 
-  array_estado: any = [
-    { value: -1, descripcion: 'Todos' },
-    { value: 1, descripcion: 'Activo' },
-    { value: 0, descripcion: 'Inactivo' }
-  ];
-
-  array_tipo: any = [
-    { value: 0, descripcion: 'Todos' },
-    { value: 1, descripcion: 'TRABAJADORES' },
-    { value: 2, descripcion: 'ALUMNOS' }
-  ];
-
-
-  
   private subscriptions: Subscription[] = [];
   viewsActions: Array<any> = [];
   array_data: TableResponseModel<any>;
@@ -55,52 +40,46 @@ export class UsuarioComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-		// public usuario_s: UsuarioService,
-    // public certificado_s: CertificadosService,
-     public toastr: ToastrManager,
+		public usuarioService: UsuarioService,
+    public toastr: ToastrManager,
   ) { }
 
   ngOnInit(): void {
     this.listData = new MatTableDataSource([]);
-    this.filterForm();
     this.searchForm();
 
-    this.getUsuarios(0,-1);    
+    this.getUsuarios();    
   }
 
-  getUsuarios(tipo,estado) {
-    // this.listData = new MatTableDataSource([]);
-    // this.searchBan = false;
-    // this.load_data = false;
-    // this.no_data = true;
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sb => sb.unsubscribe());
+  }
+  getUsuarios() {
+    this.listData = new MatTableDataSource([]);
+    this.searchBan = false;
+    this.load_data = false;
+    this.no_data = true;
 
-    // this.usuario_s.GetUsuarios(tipo,estado).subscribe(
-    //   (data:any) => {        
-    //     this.load_data = true;
-    //     this.searchBan = false;
-    //     this.listData = new MatTableDataSource(data);
-    //     if(data.length > 0){
-    //       this.no_data = true;
-    //     }else{
-    //       this.no_data = false;
-    //     }
-    //     this.listData.sort = this.MatSort;
-    //     this.listData.paginator = this.paginator;       
-    //   }, ( errorServicio ) => {
-    //     this.load_data = true;
-    //     this.no_data = false;
-    //     this.searchBan = false;        
-    //   }
-    // );
-
+    this.usuarioService.findAll().subscribe(
+      (data:any) => {        
+        this.load_data = true;
+        this.searchBan = false;
+        this.listData = new MatTableDataSource(data);
+        if(data.length > 0){
+          this.no_data = true;
+        }else{
+          this.no_data = false;
+        }
+        this.listData.sort = this.MatSort;
+        this.listData.paginator = this.paginator;       
+      }, ( errorServicio ) => {
+        this.load_data = true;
+        this.no_data = false;
+        this.searchBan = false;        
+      }
+    );
   }
 
-  filterForm() {
-    this.filterGroup = this.fb.group({
-      Estado: [-1],
-      Tipo: [0],
-    });    
-  }
 
 
   searchForm() {
@@ -113,7 +92,7 @@ export class UsuarioComponent implements OnInit {
     const modalRef = this.modalService.open(SaveUpdateUsuarioComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getUsuarios(this.filterGroup.controls.Tipo.value,this.filterGroup.controls.Estado.value);
+      this.getUsuarios();
     }, (reason) => {
      
     }); 
@@ -123,15 +102,10 @@ export class UsuarioComponent implements OnInit {
     const modalRef = this.modalService.open(ResetPasswordComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getUsuarios(this.filterGroup.controls.Tipo.value,this.filterGroup.controls.Estado.value);
+      this.getUsuarios();
     }, (reason) => {
      
     }); 
-  }
-
-  asignar(idUsuario) {
-    const modalRef = this.modalService.open(AsignarRolEmpresaComponent, { size: 'lg' });
-    modalRef.componentInstance.idUsuario = idUsuario;
   }
 
   search() {
@@ -144,50 +118,53 @@ export class UsuarioComponent implements OnInit {
     }
   }
 
-  delete(id: number) {
-    // const modalRef = this.modalService.open(DeleteUsuarioModalComponent);
-    // modalRef.componentInstance.id = id;
-    // modalRef.componentInstance.titulo = 'Eliminar Usuario';
-    // modalRef.componentInstance.descripcion = 'Esta seguro de eliminar el Usuario seleccionado?';
-    // modalRef.componentInstance.msgloading = 'Eliminando Usuario...';
-    // modalRef.result.then((result) => {
-    //   this.getUsuarios(this.filterGroup.controls.Tipo.value,this.filterGroup.controls.Estado.value);
-    // }, (reason) => {
-     
-    // }); 
+  delete(item) {
+    const modalRef = this.modalService.open(DeleteModalComponent);
+    modalRef.componentInstance.id = item.id;
+    modalRef.componentInstance.titulo = 'Eliminar Usuario';
+    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el usuario ${item.nombre} ?`;
+    modalRef.componentInstance.msgloading = 'Eliminando Usuario...';
+    modalRef.componentInstance.service = ()=>{
+      //return this.rolService.delete(item.id);
+    };
+    modalRef.result.then((result) => {
+      this.getUsuarios();
+    }, (reason) => {
+      
+    });  
   }
 
   enabledUsuario(item) {
-		// this.usuario_s.EnableDisableUsuario(item.idUsuario, !item.activo).subscribe(
-    //   (data:any) => {
-    //     if (data[0].Success > 0) {
-		// 			this.getUsuarios(this.filterGroup.controls.Tipo.value,this.filterGroup.controls.Estado.value);
-    //       this.toastr.successToastr(data[0].Message, 'Correcto!', {
-    //         toastTimeout: 2000,
-    //         showCloseButton: true,
-    //         animate: 'fade',
-    //         progressBar: true
-    //       });
-    //     } else {
-    //       item.Activo = item.Activo;
-    //       this.toastr.errorToastr(data[0].Message, 'Error!', {
-    //         toastTimeout: 2000,
-    //         showCloseButton: true,
-    //         animate: 'fade',
-    //         progressBar: true
-    //       });
-    //     }
+		this.usuarioService.enableDisableUser(item.id).subscribe(
+      (data:any) => {
+        if (data.ok > 0) {
+					this.getUsuarios();
+          this.toastr.successToastr(data.message, 'Correcto!', {
+            toastTimeout: 2000,
+            showCloseButton: true,
+            animate: 'fade',
+            progressBar: true
+          });
+        } else {
+          item.Activo = item.Activo;
+          this.toastr.errorToastr(data.message, 'Error!', {
+            toastTimeout: 2000,
+            showCloseButton: true,
+            animate: 'fade',
+            progressBar: true
+          });
+        }
                
-    //   }, ( errorServicio ) => { 
-    //     this.toastr.errorToastr('Ocurrio un error.', 'Error!', {
-    //       toastTimeout: 2000,
-    //       showCloseButton: true,
-    //       animate: 'fade',
-    //       progressBar: true
-    //     });       
-    //     ;
-    //   }
-    // ); 
+      }, ( errorServicio ) => { 
+        this.toastr.errorToastr('Ocurrio un error.', 'Error!', {
+          toastTimeout: 2000,
+          showCloseButton: true,
+          animate: 'fade',
+          progressBar: true
+        });       
+        ;
+      }
+    ); 
   }
 
 }

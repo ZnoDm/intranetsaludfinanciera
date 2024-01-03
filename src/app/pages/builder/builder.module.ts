@@ -30,6 +30,14 @@ import { PerfilOpcionesComponent } from './datos-personales/perfil-opciones/perf
 import { PermisoComponent } from './permiso/permiso.component';
 import { SaveUpdatePermisoModalComponent } from './permiso/save-update-permiso-modal/save-update-permiso-modal.component';
 import { AsignarPermisosComponent } from './asignar-permisos/asignar-permisos.component';
+import { UsuarioComponent } from './usuario/usuario.component';
+import { ResetPasswordComponent } from './usuario/reset-password/reset-password.component';
+import { BancoComponent } from './banco/banco.component';
+import { SaveUpdateBancoModalComponent } from './banco/save-update-banco-modal/save-update-banco-modal.component';
+import { ProveedorTarjetaComponent } from './proveedor-tarjeta/proveedor-tarjeta.component';
+import { SaveUpdateProveedorTarjetaModalComponent } from './proveedor-tarjeta/save-update-proveedor-tarjeta-modal/save-update-proveedor-tarjeta-modal.component';
+import { TipoTarjetaComponent } from './tipo-tarjeta/tipo-tarjeta.component';
+import { SaveUpdateTipoTarjetaModalComponent } from './tipo-tarjeta/save-update-tipo-tarjeta-modal/save-update-tipo-tarjeta-modal.component';
 @NgModule({
   declarations: [
     BuilderComponent,
@@ -45,7 +53,20 @@ import { AsignarPermisosComponent } from './asignar-permisos/asignar-permisos.co
     DatosPersonalesComponent,
     InformacionPersonalComponent,
     CambiarPasswordComponent,
-    PerfilOpcionesComponent
+    PerfilOpcionesComponent,
+
+    UsuarioComponent,
+    ResetPasswordComponent,
+
+    BancoComponent,
+    SaveUpdateBancoModalComponent,
+
+    ProveedorTarjetaComponent,
+    SaveUpdateProveedorTarjetaModalComponent,
+
+    TipoTarjetaComponent,
+    SaveUpdateTipoTarjetaModalComponent
+    
   ],
   imports: [
     BuilderRoutingModule,
