@@ -6,6 +6,8 @@ import { CambiarPasswordComponent } from './datos-personales/cambiar-password/ca
 import { DatosPersonalesComponent } from './datos-personales/datos-personales.component';
 import { PermisoComponent } from './permiso/permiso.component';
 import { AsignarPermisosComponent } from './asignar-permisos/asignar-permisos.component';
+import { UsuarioComponent } from './usuario/usuario.component';
+import { BancoComponent } from './banco/banco.component';
 
 const routes: Routes = [
   {
@@ -49,6 +51,16 @@ const routes: Routes = [
           
         ]
 			},
+
+      {
+        path: 'usuarios',
+        component: UsuarioComponent
+      },
+      
+      {
+        path: 'banco',
+        component: BancoComponent
+      },
      
       {
         path: '**',

@@ -64,7 +64,7 @@ export class AsignarPermisosComponent implements OnInit {
   }
 
   changeRol(Rol:number) {
-    this.rolService.obtenerNavegacionPorRol(Rol)
+    this.rolService.getAllPermisosForRoleWithFlag(Rol)
       .subscribe((response: any) => {
         this.array_permisos = response;
         console.log(response)
@@ -73,7 +73,7 @@ export class AsignarPermisosComponent implements OnInit {
   }
 
   changeChecked(idPermiso:number, active:boolean) {
-    this.rolService.asignarPermisoByRol(this.filterGroup.controls.Rol.value, idPermiso,!active).
+    this.rolService.togglePermisoForRole(this.filterGroup.controls.Rol.value, idPermiso,!active).
     subscribe((response: any) => {
        if (response.ok) {
          this.toastr.successToastr(response.Message, 'Éxito!', {

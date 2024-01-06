@@ -75,12 +75,20 @@
 											</span>
 									</a>
 
-									<a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
+									<a title="Asignar Rol" class="btn btn-icon btn-light btn-hover-info btn-sm mr-3"
+											(click)="asignar(lesson)">
+											<span [inlineSVG]="'./assets/media/svg/icons/General/Settings-2.svg'" cacheSVG="true"
+											class="svg-icon svg-icon-md svg-icon-info">
+											</span>
+									</a>
+
+
+									<!-- <a title="Delete customer" class="btn btn-icon btn-light btn-hover-danger btn-sm"
 											(click)="delete(lesson.idUsuario)">
 											<span [inlineSVG]="'./assets/media/svg/icons/General/Trash.svg'" cacheSVG="true"
 											class="svg-icon svg-icon-md svg-icon-danger">
 											</span>
-									</a>
+									</a> -->
 							</mat-cell>
 					</ng-container>
 

@@ -9,9 +9,9 @@ import { Customer } from 'src/app/modules/e-commerce/_models/customer.model';
 import { CustomersService } from 'src/app/modules/e-commerce/_services';;
 
 @Component({
-  selector: 'app-save-update-usuario',
-  templateUrl: './save-update-usuario.component.html',
-  styleUrls: ['./save-update-usuario.component.scss'],
+  selector: 'app-update-usuario',
+  templateUrl: './update-usuario.component.html',
+  styleUrls: ['./update-usuario.component.scss'],
   providers: [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}

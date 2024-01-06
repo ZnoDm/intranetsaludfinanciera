@@ -24,7 +24,7 @@ export class RolService {
   }
 
 
-  asignarPermisoByRol(roleId: number, permisoId: number, isActive: boolean): Observable<any> {
+  togglePermisoForRole(roleId: number, permisoId: number, isActive: boolean): Observable<any> {
     this.isLoadingSubject.next(true);
     const body = { isActive };
     return this.httpClient.put<any>(`${this.apiUrl}/${roleId}/permisos/${permisoId}`, body,
@@ -37,9 +37,7 @@ export class RolService {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
-
-
-  obtenerNavegacionPorRol(idRol:number) {
+  getAllPermisosForRoleWithFlag(idRol:number) {
     this.isLoadingSubject.next(true);
     return this.httpClient.get<any>(`${this.apiUrl}/${idRol}/permisos`,
       { headers: this.headerBasicAuthorization.getHeaders()}
@@ -51,6 +49,7 @@ export class RolService {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
 
   findAll(): Observable<any> {
     this.isLoadingSubject.next(true);

@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ICreateAction, IEditAction, IDeleteAction, IDeleteSelectedAction, IFetchSelectedAction, IUpdateStatusForSelectedAction, ISortView, IFilterView, IGroupingView, ISearchView, PaginatorState, SortState, GroupingState, TableResponseModel } from 'src/app/_metronic/shared/crud-table';
@@ -8,11 +8,12 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { SaveUpdateUsuarioComponent } from './save-update-usuario/save-update-usuario.component';
+import { SaveUpdateUsuarioComponent } from './save-usuario/save-usuario.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { TouchSequence } from 'selenium-webdriver';
-import { UsuarioService } from 'src/app/shared/services/usuario.service';
+import {UsuariosService } from 'src/app/shared/services/usuarios.service';
 import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.component';
+import { AsignarRolComponent } from './asignar-rol/asignar-rol.component';
 
 
 @Component({
@@ -34,15 +35,16 @@ export class UsuarioComponent implements OnInit {
   @ViewChild('matPaginator', { static: true }) paginator: MatPaginator;
 
   private subscriptions: Subscription[] = [];
-  viewsActions: Array<any> = [];
-  array_data: TableResponseModel<any>;
-  array_dataList: any;
+  isLoading$: Observable<boolean>;
+  
   constructor(
     private fb: FormBuilder,
     private modalService: NgbModal,
-		public usuarioService: UsuarioService,
+		public usuarioService: UsuariosService,
     public toastr: ToastrManager,
-  ) { }
+  ) {
+    this.isLoading$ = this.usuarioService.isLoading$;
+   }
 
   ngOnInit(): void {
     this.listData = new MatTableDataSource([]);
@@ -54,14 +56,17 @@ export class UsuarioComponent implements OnInit {
   ngOnDestroy(): void {
     this.subscriptions.forEach(sb => sb.unsubscribe());
   }
+
+
   getUsuarios() {
     this.listData = new MatTableDataSource([]);
     this.searchBan = false;
     this.load_data = false;
     this.no_data = true;
 
-    this.usuarioService.findAll().subscribe(
-      (data:any) => {        
+    this.usuarioService.getUsers().subscribe(
+      (data:any) => {    
+        console.log(data);    
         this.load_data = true;
         this.searchBan = false;
         this.listData = new MatTableDataSource(data);
@@ -118,20 +123,25 @@ export class UsuarioComponent implements OnInit {
     }
   }
 
-  delete(item) {
-    const modalRef = this.modalService.open(DeleteModalComponent);
+  asignar(item){
+    const modalRef = this.modalService.open(AsignarRolComponent, { size: 'lg' });
     modalRef.componentInstance.id = item.id;
-    modalRef.componentInstance.titulo = 'Eliminar Usuario';
-    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el usuario ${item.nombre} ?`;
-    modalRef.componentInstance.msgloading = 'Eliminando Usuario...';
-    modalRef.componentInstance.service = ()=>{
-      //return this.rolService.delete(item.id);
-    };
-    modalRef.result.then((result) => {
-      this.getUsuarios();
-    }, (reason) => {
+  }
+
+  delete(item) {
+    // const modalRef = this.modalService.open(DeleteModalComponent);
+    // modalRef.componentInstance.id = item.id;
+    // modalRef.componentInstance.titulo = 'Eliminar Usuario';
+    // modalRef.componentInstance.descripcion = `Esta seguro de eliminar el usuario ${item.nombre} ?`;
+    // modalRef.componentInstance.msgloading = 'Eliminando Usuario...';
+    // modalRef.componentInstance.service = ()=>{
+    //   //return this.rolService.delete(item.id);
+    // };
+    // modalRef.result.then((result) => {
+    //   this.getUsuarios();
+    // }, (reason) => {
       
-    });  
+    // });  
   }
 
   enabledUsuario(item) {

@@ -38,6 +38,7 @@ import { ProveedorTarjetaComponent } from './proveedor-tarjeta/proveedor-tarjeta
 import { SaveUpdateProveedorTarjetaModalComponent } from './proveedor-tarjeta/save-update-proveedor-tarjeta-modal/save-update-proveedor-tarjeta-modal.component';
 import { TipoTarjetaComponent } from './tipo-tarjeta/tipo-tarjeta.component';
 import { SaveUpdateTipoTarjetaModalComponent } from './tipo-tarjeta/save-update-tipo-tarjeta-modal/save-update-tipo-tarjeta-modal.component';
+import { AsignarRolComponent } from './usuario/asignar-rol/asignar-rol.component';
 @NgModule({
   declarations: [
     BuilderComponent,
@@ -57,7 +58,8 @@ import { SaveUpdateTipoTarjetaModalComponent } from './tipo-tarjeta/save-update-
 
     UsuarioComponent,
     ResetPasswordComponent,
-
+    AsignarRolComponent,
+    
     BancoComponent,
     SaveUpdateBancoModalComponent,
 

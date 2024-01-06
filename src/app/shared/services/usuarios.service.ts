@@ -8,7 +8,7 @@ import { HeaderBasicAuthorizationService } from './header-basic-authorization.se
 @Injectable({
   providedIn: 'root'
 })
-export class UsuarioService {
+export class UsuariosService {
   private apiUrl = environment.apiUrl + '/users';
   isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
@@ -21,11 +21,36 @@ export class UsuarioService {
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
+  toggleRoleForUser(id: number, rolId: number, isActive: boolean): Observable<any> {
+    this.isLoadingSubject.next(true);
+    const body = { isActive };
+    return this.httpClient.put<any>(`${this.apiUrl}/${id}/permisos/${rolId}`, body,
+      { headers: this.headerBasicAuthorization.getHeaders()}
+    ).pipe(
+      map(data => data),
+      catchError((err) => {
+        return of(err);
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+  getAllRolesForUserWithFlag(id:number) {
+    this.isLoadingSubject.next(true);
+    return this.httpClient.get<any>(`${this.apiUrl}/${id}/permisos`,
+      { headers: this.headerBasicAuthorization.getHeaders()}
+    ).pipe( 
+      map( data => data ),
+      catchError((err) => {
+        return of(err);
+      }),
+      finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
 
-  findAll(): Observable<any[]> {
+  getUsers(): Observable<any> {
+    this.isLoadingSubject.next(true);
     return this.httpClient.get<any[]>(`${this.apiUrl}`, { headers: this.headerBasicAuthorization.getHeaders() })
     .pipe(
-        map( data => data ),
         catchError((err) => {
           return of(err);
         }),
@@ -34,6 +59,7 @@ export class UsuarioService {
   }
 
   findOneById(id: number): Observable<any> {
+    this.isLoadingSubject.next(true);
     return this.httpClient.get<any>(`${this.apiUrl}/${id}`, { headers: this.headerBasicAuthorization.getHeaders() })
     .pipe(
         map( data => data ),
@@ -45,6 +71,7 @@ export class UsuarioService {
   }
 
   enableDisableUser(id: number): Observable<any> {
+    this.isLoadingSubject.next(true);
     return this.httpClient.put<any>(`${this.apiUrl}/${id}/enabled-disabled`, {}, { headers: this.headerBasicAuthorization.getHeaders() })
     .pipe(
         map( data => data ),
@@ -55,7 +82,28 @@ export class UsuarioService {
     );
   }
 
+  
+  resetPassword(id: number): Observable<any> {
+    this.isLoadingSubject.next(true);
+    return this.httpClient.put<any>(`${this.apiUrl}/${id}/reset-password`, 
+    { headers: this.headerBasicAuthorization.getHeaders() })
+    .pipe(
+        map( data => data ),
+        catchError((err) => {
+            return of(err);
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+  
+
+
+
+
+
   createUser(user: any): Observable<any> {
+    this.isLoadingSubject.next(true);
     return this.httpClient.post<any>(`${this.apiUrl}`, user, { headers: this.headerBasicAuthorization.getHeaders() })
     .pipe(
         map( data => data ),
@@ -67,6 +115,7 @@ export class UsuarioService {
   }
 
   updateUser(id: number, updatedUser: any): Observable<any> {
+    this.isLoadingSubject.next(true);
     return this.httpClient.patch<any>(`${this.apiUrl}/${id}`, updatedUser, { headers: this.headerBasicAuthorization.getHeaders() })
     .pipe(
         map( data => data ),
@@ -76,6 +125,7 @@ export class UsuarioService {
         finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
   
   // You can implement delete method similarly
 }

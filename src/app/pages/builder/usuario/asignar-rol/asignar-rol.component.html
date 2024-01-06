@@ -1,0 +1,35 @@
+<div class="modal-content modal-aspire">
+	<div class="modal-header">
+		<div class="modal-title h4" id="example-modal-sizes-title-lg">
+			<ng-container>
+				<ng-container>Asignar roles</ng-container>
+			</ng-container>
+		</div>
+	</div>
+	<div class="overlay overlay-block cursor-default modal-body" style="min-height: 404px">
+		<div class="col-12">
+			<div class="d-flex justify-content-center w-100">
+			  <ng-container *ngIf="isLoading$ | async">
+				<mat-spinner [diameter]="24"></mat-spinner>
+			  </ng-container>
+			</div>
+			<div>
+			  <ng-container *ngIf="array_roles.lenght == 0">
+				No hay data.
+			  </ng-container>
+			  <ng-container >
+				<div *ngFor="let item of array_roles">
+				  <label>
+					<input type="checkbox" (change)="changeChecked(item.id,item.active)" [checked]="item.active">
+					{{ item.nombre }}
+				  </label>
+				</div>
+			  </ng-container>
+			</div>
+		  </div>
+	</div>
+	
+	<div class="modal-footer">
+		<button type="button" class="btn btn-light btn-elevate mr-2" (click)="modal.dismiss()">Cancelar</button>
+	</div>
+</div>
