@@ -22,7 +22,7 @@ export class PersonService {
     this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
-  findOne(): Observable<any> {
+  getDatosPersonales(): Observable<any> {
     this.isLoadingSubject.next(true);
     return this.httpClient.get<any>(`${this.apiUrl}`,
       { headers: this.headerBasicAuthorization.getHeaders()}
@@ -71,6 +71,18 @@ export class PersonService {
         return of(err);
       }),
       finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
+  getComboPersonas(): Observable<any> {
+    this.isLoadingSubject.next(true);
+    return this.httpClient.get<any[]>(`${this.apiUrl}/combo`, { headers: this.headerBasicAuthorization.getHeaders() })
+    .pipe(
+        catchError((err) => {
+          return of(err);
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
     );
   }
 }

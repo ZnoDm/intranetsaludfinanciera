@@ -14,6 +14,7 @@ import { TouchSequence } from 'selenium-webdriver';
 import {UsuariosService } from 'src/app/shared/services/usuarios.service';
 import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.component';
 import { AsignarRolComponent } from './asignar-rol/asignar-rol.component';
+import { UpdateUsuarioComponent } from './update-usuario/update-usuario.component';
 
 
 @Component({
@@ -93,9 +94,8 @@ export class UsuarioComponent implements OnInit {
     });    
   }
 
-  create(item) {
+  create() {
     const modalRef = this.modalService.open(SaveUpdateUsuarioComponent, { size: 'ms' });
-    modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
       this.getUsuarios();
     }, (reason) => {
@@ -103,6 +103,17 @@ export class UsuarioComponent implements OnInit {
     }); 
   }
 
+
+  edit(item){
+    const modalRef = this.modalService.open(UpdateUsuarioComponent, { size: 'ms' });
+    modalRef.componentInstance.item = item;
+    modalRef.result.then((result) => {
+      this.getUsuarios();
+    }, (reason) => {
+     
+    }); 
+
+  }
   reset(item) {
     const modalRef = this.modalService.open(ResetPasswordComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;

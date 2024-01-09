@@ -17,7 +17,7 @@ import { CustomersService } from 'src/app/modules/e-commerce/_services';;
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
-export class SaveUpdateUsuarioComponent implements OnInit {
+export class UpdateUsuarioComponent implements OnInit {
   @Input() item: any;
   isLoading$;
   idUsuario: number = 0;

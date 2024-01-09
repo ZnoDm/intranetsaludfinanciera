@@ -51,21 +51,22 @@
       <li *ngFor="let item of dataUrls" class="menu-item menu-item-submenu" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-open">
         <a class="menu-link menu-toggle" routerLinkActive="active" [href]="item.url">        
           <i class="justify-content-center svg-icon menu-icon {{item?.icono}}" style="margin-left: -6px;"></i>
-          <span class="menu-text">{{item.nombre }}</span>
+          <span class="menu-text" >{{item.nombre }}</span>
           <i class="menu-arrow"></i>
         </a>
-        <!-- <div class="menu-submenu">
+        
+        <div class="menu-submenu" *ngIf="item.subNavegacion && item.subNavegacion.length >0">
           <i class="menu-arrow"></i>
           <ul class="menu-subnav">     
-            <li *ngFor="let opc of item.SubNavegacion" class="menu-item" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-active">
-              <a *ngIf="opc.SubNavegacion && opc.SubNavegacion.length > 0 && opc.VisibleNavegacion" class="menu-link" routerLink="{{opc.Url}}" routerLinkActive="active">
-                <span class="menu-text">{{opc.Nombre }} </span>
+            <li *ngFor="let opc of item.subNavegacion" class="menu-item" aria-haspopup="true" data-menu-toggle="hover" routerLinkActive="menu-item-active">
+              <a  class="menu-link" routerLink="{{opc.url}}" routerLinkActive="active">
+                <span class="menu-text">{{opc.nombre }} </span>
               </a>
             </li>
   
           </ul>
-        </div> -->
-        </li>
+        </div>
+      </li>
       
         
     </ul>

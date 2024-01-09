@@ -23,6 +23,18 @@ export class RolService {
       this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
+  getComboRoles(): Observable<any> {
+    this.isLoadingSubject.next(true);
+    return this.httpClient.get<any[]>(`${this.apiUrl}/combo`, { headers: this.headerBasicAuthorization.getHeaders() })
+    .pipe(
+        catchError((err) => {
+          return of(err);
+        }),
+        finalize(() => this.isLoadingSubject.next(false))
+    );
+  }
+
+
 
   togglePermisoForRole(roleId: number, permisoId: number, isActive: boolean): Observable<any> {
     this.isLoadingSubject.next(true);

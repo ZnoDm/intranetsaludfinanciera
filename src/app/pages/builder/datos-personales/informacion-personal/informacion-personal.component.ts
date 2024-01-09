@@ -50,7 +50,7 @@ export class InformacionPersonalComponent implements OnInit {
   }
 
   getDatos(){
-    this.personService.findOne()
+    this.personService.getDatosPersonales()
     .subscribe(
       (data:any) => { 
         console.log(data);

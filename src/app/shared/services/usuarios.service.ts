@@ -24,7 +24,7 @@ export class UsuariosService {
   toggleRoleForUser(id: number, rolId: number, isActive: boolean): Observable<any> {
     this.isLoadingSubject.next(true);
     const body = { isActive };
-    return this.httpClient.put<any>(`${this.apiUrl}/${id}/permisos/${rolId}`, body,
+    return this.httpClient.put<any>(`${this.apiUrl}/${id}/roles/${rolId}`, body,
       { headers: this.headerBasicAuthorization.getHeaders()}
     ).pipe(
       map(data => data),
@@ -36,7 +36,7 @@ export class UsuariosService {
   }
   getAllRolesForUserWithFlag(id:number) {
     this.isLoadingSubject.next(true);
-    return this.httpClient.get<any>(`${this.apiUrl}/${id}/permisos`,
+    return this.httpClient.get<any>(`${this.apiUrl}/${id}/roles`,
       { headers: this.headerBasicAuthorization.getHeaders()}
     ).pipe( 
       map( data => data ),
@@ -46,6 +46,7 @@ export class UsuariosService {
       finalize(() => this.isLoadingSubject.next(false))
     );
   }
+
 
   getUsers(): Observable<any> {
     this.isLoadingSubject.next(true);

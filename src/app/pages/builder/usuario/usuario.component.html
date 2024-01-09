@@ -4,7 +4,7 @@
 			<h3 class="card-label">Usuarios</h3>
 		</div>
 		<div class="card-toolbar">
-			<button type="button" class="btn btn-primary" (click)="create(null)">Nuevo Usuario</button>
+			<button type="button" class="btn btn-primary" (click)="create()">Nuevo Usuario</button>
 		</div>
 	</div>
 	<div class="card-body">
@@ -68,6 +68,13 @@
 					<ng-container matColumnDef="actions">
 							<mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>
 							<mat-cell *matCellDef="let lesson">
+
+									<a title="Edit customer" class="btn btn-icon btn-light btn-hover-primary btn-sm mx-3" (click)="edit(lesson)">
+										<span [inlineSVG]="'./assets/media/svg/icons/Communication/Write.svg'" cacheSVG="true"
+										class="svg-icon svg-icon-md svg-icon-primary">
+										</span>
+									</a>
+									
 									<a title="Restablecer contraseña" class="btn btn-icon btn-light btn-hover-warning btn-sm mr-3"
 											(click)="reset(lesson)">
 											<span [inlineSVG]="'./assets/media/svg/icons/General/Update.svg'" cacheSVG="true"

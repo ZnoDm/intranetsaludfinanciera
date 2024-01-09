@@ -34,7 +34,7 @@ export class AsignarRolComponent implements OnInit {
     public toastr: ToastrManager,
     ) {
       this.isLoading$ = this.usuarioService.isLoading$;
-     }
+    }
 
   ngOnInit(): void {    
     this.getRoles();   
@@ -48,8 +48,7 @@ export class AsignarRolComponent implements OnInit {
     this.usuarioService.getAllRolesForUserWithFlag(this.id).subscribe(
       (data:any)=> {  
           this.array_roles = data;
-        }, ( errorServicio ) => {           
-          ;
+        }, ( errorServicio ) => {      
         }
     );
 	}
