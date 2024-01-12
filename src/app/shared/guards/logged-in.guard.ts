@@ -21,12 +21,10 @@ export class LoggedInGuard implements CanActivate {
     let stateUrl: string = state.url.split('?')[0];
 
     if (this.authService.isLoggedIn() && this.authService.currentUserValue) {
-      console.log(this.permisosNavegacionService.getUrls.length);
       if(this.permisosNavegacionService.getUrls.length <1){
 
         return this.authService.obtenerNavegacionPorUsuario()
         .pipe(map((response: any) => {
-          console.log(response)
           this.permisosNavegacionService.set(response);
           let urlsObtenidas = this.permisosNavegacionService.getUrls();
           if(urlsObtenidas.some(elemento => elemento.url == stateUrl)){

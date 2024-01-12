@@ -50,7 +50,6 @@ export class UsuarioComponent implements OnInit {
   ngOnInit(): void {
     this.listData = new MatTableDataSource([]);
     this.searchForm();
-
     this.getUsuarios();    
   }
 

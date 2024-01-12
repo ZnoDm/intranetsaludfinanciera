@@ -18,7 +18,6 @@ import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.com
     styleUrls: ['./tipo-tarjeta.component.scss'],
 })
 export class TipoTarjetaComponent implements OnInit {
-
     
   load_data: boolean = true;
   no_data: boolean = false;
@@ -27,7 +26,7 @@ export class TipoTarjetaComponent implements OnInit {
   searchGroup: FormGroup;
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Nro', 'Nombre', 'Url', 'actions'];
+  displayedColumns: string[] = ['Nro', 'Nombre', 'actions'];
 
   @ViewChild(MatSort) MatSort: MatSort;
   @ViewChild('matPaginator', { static: true }) paginator: MatPaginator;
@@ -40,10 +39,10 @@ export class TipoTarjetaComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public tipoTarjetaService: TipoTarjetaService,
+    public proveedorTarjetaService: TipoTarjetaService,
     public toastr: ToastrManager,
     private chgRef: ChangeDetectorRef,) { 
-      this.isLoading$ = this.tipoTarjetaService.isLoading$;
+      this.isLoading$ = this.proveedorTarjetaService.isLoading$;
   }
 
   ngOnInit(): void {
@@ -70,7 +69,7 @@ export class TipoTarjetaComponent implements OnInit {
     this.load_data = false;
     this.no_data = true;
 
-    this.tipoTarjetaService.findAll().subscribe(
+    this.proveedorTarjetaService.findAll().subscribe(
       (data:any) => {
         this.load_data = true;
         this.searchBan = false;
@@ -125,10 +124,10 @@ export class TipoTarjetaComponent implements OnInit {
     const modalRef = this.modalService.open(DeleteModalComponent);
     modalRef.componentInstance.id = item.id;
     modalRef.componentInstance.titulo = 'Eliminar TipoTarjeta';
-    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el tipo-tarjeta ${item.nombre} ?`;
+    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el banco ${item.nombre} ?`;
     modalRef.componentInstance.msgloading = 'Eliminando TipoTarjeta...';
     modalRef.componentInstance.service = ()=>{
-      return this.tipoTarjetaService.delete(item.id);
+      return this.proveedorTarjetaService.delete(item.id);
     };
     modalRef.result.then((result) => {
       this.getTipoTarjetaes();
@@ -136,7 +135,6 @@ export class TipoTarjetaComponent implements OnInit {
       
     });  
   }
-
 
 }
 

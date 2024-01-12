@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
@@ -6,7 +6,10 @@ import { of, Subscription } from 'rxjs';
 import { catchError, finalize, first, tap } from 'rxjs/operators';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
 import { Customer } from 'src/app/modules/e-commerce/_models/customer.model';
-import { CustomersService } from 'src/app/modules/e-commerce/_services';;
+import { CustomersService } from 'src/app/modules/e-commerce/_services';import { PersonService } from 'src/app/shared/services/person.service';
+import { RolService } from 'src/app/shared/services/rol.service';
+import { UsuariosService } from 'src/app/shared/services/usuarios.service';
+;
 
 @Component({
   selector: 'app-update-usuario',
@@ -23,77 +26,75 @@ export class UpdateUsuarioComponent implements OnInit {
   idUsuario: number = 0;
   formGroup: FormGroup;
   private subscriptions: Subscription[] = [];
-	array_trabajadores: any;
-  array_alumnos: any;
+
+	array_roles: any;
+  array_personas: any;
+
+
   constructor(
-    
-    // private alumno_s:AlumnoService,
-    private customersService: CustomersService,
+    private userService:UsuariosService,
+    private personService: PersonService,
+    private rolService:RolService,
     private fb: FormBuilder, 
     public modal: NgbActiveModal,
-		// public trabajador_s: TrabajadorService,
-		// public usuario_s: UsuarioService,
     public toastr: ToastrManager,
-    ) { }
+    private chgRef: ChangeDetectorRef
+    ) { 
+      
+    this.isLoading$ = this.userService.isLoading$;
+    }
 
   ngOnInit(): void {
-    this.isLoading$ = this.customersService.isLoading$;
     this.loadUsuario();
+
   }
 
-	getTrabajadores(PosibleValor){
-		// this.trabajador_s.GetListarTrabajadores().subscribe(
-		// 	(data:any)=>{
-		// 		this.array_trabajadores = data;
-		// 		if(PosibleValor !== null){
-		// 			this.formGroup.controls.Trabajador.setValue(PosibleValor);
-		// 		}
-		// 	}, (errorServicio)=>{
-		// 		;
-		// 	}
-		// );
+	getRoles(PosibleValor){
+		this.rolService.getComboRoles().subscribe(
+			(data:any)=>{
+        console.log(data)
+				this.array_roles = data;
+				if(PosibleValor !== null){
+					this.formGroup.controls.Rol.setValue(PosibleValor);
+          this.chgRef.markForCheck();
+				}
+			}, (errorServicio)=>{
+				;
+			}
+		);
 	}
 
-  getAlumnos(PosibleValor){
-		// this.alumno_s.GetListarAlumnos().subscribe(
-		// 	(data:any)=>{
-		// 		this.array_alumnos = data;
-		// 		if(PosibleValor !== null){
-		// 			this.formGroup.controls.Alumno.setValue(PosibleValor);
-		// 		}
-		// 	}, (errorServicio)=>{
-		// 		;
-		// 	}
-		// );
+  getPersonas(PosibleValor){
+		this.personService.getComboPersonas().subscribe(
+			(data:any)=>{
+        console.log(data)
+				this.array_personas = data;
+				if(PosibleValor !== null){
+					this.formGroup.controls.Persona.setValue(PosibleValor);
+          this.chgRef.markForCheck();
+				}
+			}, (errorServicio)=>{
+				;
+			}
+		);
 	}
 
   loadUsuario() {
-    if (this.item !== null) {
-      this.idUsuario = this.item.idUsuario;
-      this.loadForm();    
-			this.getTrabajadores(this.item.idTrabajador);
-      this.getAlumnos(this.item.idAlumno);
-      this.formGroup.controls.Login.setValue(this.item.login);  
-      this.formGroup.controls.Password.setValue(this.item.password);    
-      this.formGroup.controls.Activo.setValue(this.item.activo);      
-    } else {
-      this.idUsuario = 0;
-      this.loadForm();
-			this.getTrabajadores(null);
-      this.getAlumnos(null);
-    }
+    this.idUsuario = 0;
+    this.loadForm();
+    this.getPersonas(null);
+    this.getRoles(null);
   }  
 
   loadForm() {
     this.formGroup = this.fb.group({
-      Trabajador: [null],
-      Alumno: [null, Validators.compose([Validators.required])],
-			Login: [null, Validators.compose([Validators.required])],
+			Email: [null, Validators.compose([Validators.required])],
 			Password: [null, Validators.compose([Validators.required])],
+      Rol: [null, Validators.compose([Validators.required])],
+      Persona: [null, Validators.compose([Validators.required])],
       Activo: [true],      
     });
   }
-
 
   save() {
     let data = this.prepareUsuario();

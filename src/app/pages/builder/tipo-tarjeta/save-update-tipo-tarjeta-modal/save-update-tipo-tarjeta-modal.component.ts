@@ -46,8 +46,7 @@ export class SaveUpdateTipoTarjetaModalComponent implements OnInit {
     if (this.item !== null) {
       this.id = this.item.id;
       this.loadForm();  
-      this.formGroup.controls.Nombre.setValue(this.item.nombre)
-      this.formGroup.controls.Url.setValue(this.item.url);        
+      this.formGroup.controls.Nombre.setValue(this.item.nombre);   
     } else {
       
       this.id = 0;
@@ -57,7 +56,6 @@ export class SaveUpdateTipoTarjetaModalComponent implements OnInit {
   loadForm() {
     this.formGroup = this.fb.group({
       Nombre: [null, Validators.compose([Validators.required])],
-      Url: [null, Validators.compose([Validators.required])],
     });
   }
   private prepareCustomer() {

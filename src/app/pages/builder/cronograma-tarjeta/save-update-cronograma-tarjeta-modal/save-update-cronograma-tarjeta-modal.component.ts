@@ -4,19 +4,19 @@ import { CustomersService } from 'src/app/modules/e-commerce/_services';
 import { Subscription } from 'rxjs';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
-import { PermisoService } from 'src/app/shared/services/permiso.service';
+import { CronogramaTarjetaService } from 'src/app/shared/services/cronograma-tarjeta.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
-  selector: 'app-save-update-permiso-modal',
-  templateUrl: './save-update-permiso-modal.component.html',
-  styleUrls: ['./save-update-permiso-modal.component.scss'],
+  selector: 'app-save-update-cronograma-tarjeta-modal',
+  templateUrl: './save-update-cronograma-tarjeta-modal.component.html',
+  styleUrls: ['./save-update-cronograma-tarjeta-modal.component.scss'],
   providers: [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
-export class SaveUpdatePermisoModalComponent implements OnInit {
+export class SaveUpdateCronogramaTarjetaModalComponent implements OnInit {
 
   @Input() item: any;
   isLoading$;
@@ -28,7 +28,7 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
     private customersService: CustomersService,
     private fb: FormBuilder, 
     public modal: NgbActiveModal,
-    public permiso_s: PermisoService,
+    public cronogramaTarjetaService: CronogramaTarjetaService,
     public toastr: ToastrManager) { }
 
   ngOnInit(): void {
@@ -46,8 +46,7 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
     if (this.item !== null) {
       this.id = this.item.id;
       this.loadForm();  
-      this.formGroup.controls.Nombre.setValue(this.item.nombre)
-      this.formGroup.controls.Url.setValue(this.item.url);        
+      this.formGroup.controls.Nombre.setValue(this.item.nombre)    
     } else {
       
       this.id = 0;
@@ -57,14 +56,12 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
   loadForm() {
     this.formGroup = this.fb.group({
       Nombre: [null, Validators.compose([Validators.required])],
-      Url: [null, Validators.compose([Validators.required])],
     });
   }
   private prepareCustomer() {
     const formData = this.formGroup.value;
     return{    
         nombre: formData.Nombre,
-        url: formData.Url,    
       }
    
   }
@@ -72,7 +69,7 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
   save() {
     let data = this.prepareCustomer();
     if(this.id == 0){
-      this.permiso_s.create(data).subscribe(
+      this.cronogramaTarjetaService.create(data).subscribe(
         (data:any) => {
           if (data.ok > 0) {
             this.toastr.successToastr(data.message, 'Correcto!', {
@@ -103,7 +100,7 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
         }
       );
     }else{
-      this.permiso_s.update(this.id,data).subscribe(
+      this.cronogramaTarjetaService.update(this.id,data).subscribe(
         (data:any) => {
           if (data.ok > 0) {
             this.toastr.successToastr(data.message, 'Correcto!', {

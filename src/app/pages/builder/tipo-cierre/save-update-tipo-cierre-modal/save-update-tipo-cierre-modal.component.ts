@@ -4,19 +4,19 @@ import { CustomersService } from 'src/app/modules/e-commerce/_services';
 import { Subscription } from 'rxjs';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { CustomAdapter, CustomDateParserFormatter } from 'src/app/_metronic/core';
-import { PermisoService } from 'src/app/shared/services/permiso.service';
+import { TipoCierreService } from 'src/app/shared/services/tipo-cierre.service';
 import { ToastrManager } from 'ng6-toastr-notifications';
 
 @Component({
-  selector: 'app-save-update-permiso-modal',
-  templateUrl: './save-update-permiso-modal.component.html',
-  styleUrls: ['./save-update-permiso-modal.component.scss'],
+  selector: 'app-save-update-tipo-cierre-modal',
+  templateUrl: './save-update-tipo-cierre-modal.component.html',
+  styleUrls: ['./save-update-tipo-cierre-modal.component.scss'],
   providers: [
     {provide: NgbDateAdapter, useClass: CustomAdapter},
     {provide: NgbDateParserFormatter, useClass: CustomDateParserFormatter}
   ]
 })
-export class SaveUpdatePermisoModalComponent implements OnInit {
+export class SaveUpdateTipoCierreModalComponent implements OnInit {
 
   @Input() item: any;
   isLoading$;
@@ -28,7 +28,7 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
     private customersService: CustomersService,
     private fb: FormBuilder, 
     public modal: NgbActiveModal,
-    public permiso_s: PermisoService,
+    public tipoCierreService: TipoCierreService,
     public toastr: ToastrManager) { }
 
   ngOnInit(): void {
@@ -72,7 +72,7 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
   save() {
     let data = this.prepareCustomer();
     if(this.id == 0){
-      this.permiso_s.create(data).subscribe(
+      this.tipoCierreService.create(data).subscribe(
         (data:any) => {
           if (data.ok > 0) {
             this.toastr.successToastr(data.message, 'Correcto!', {
@@ -103,7 +103,7 @@ export class SaveUpdatePermisoModalComponent implements OnInit {
         }
       );
     }else{
-      this.permiso_s.update(this.id,data).subscribe(
+      this.tipoCierreService.update(this.id,data).subscribe(
         (data:any) => {
           if (data.ok > 0) {
             this.toastr.successToastr(data.message, 'Correcto!', {

@@ -9,12 +9,12 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TipoTarjetaService {
+export class TipoCierreService {
 
   isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
 
-  apiUrl = environment.apiUrl + '/tipo-tarjeta';
+  apiUrl = environment.apiUrl + '/tipo-cierre';
   constructor(
       private httpClient: HttpClient,
       private headerBasicAuthorization: HeaderBasicAuthorizationService,
@@ -23,6 +23,7 @@ export class TipoTarjetaService {
       this.isLoading$ = this.isLoadingSubject.asObservable();
   }
 
+ 
  
   findAll(): Observable<any> {
     this.isLoadingSubject.next(true);
@@ -50,10 +51,10 @@ export class TipoTarjetaService {
     );
   }
 
-  create(createTipoTarjetaDto: Partial<any>): Observable<any> {
+  create(createTipoCierreDto: Partial<any>): Observable<any> {
     this.isLoadingSubject.next(true);
     return this.httpClient.post<any>(`${this.apiUrl}/`, 
-    createTipoTarjetaDto,
+    createTipoCierreDto,
     { headers: this.headerBasicAuthorization.getHeaders()}
     ).pipe( 
       map( data => data ),
@@ -64,10 +65,10 @@ export class TipoTarjetaService {
     );
   }
 
-  update(id: number, updateTipoTarjetaDto: Partial<any>): Observable<any> {
+  update(id: number, updateTipoCierreDto: Partial<any>): Observable<any> {
     this.isLoadingSubject.next(true);
     return this.httpClient.patch<any>(`${this.apiUrl}/${id}`, 
-    updateTipoTarjetaDto,
+    updateTipoCierreDto,
     { headers: this.headerBasicAuthorization.getHeaders()}
     ).pipe( 
       map( data => data ),

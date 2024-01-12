@@ -8,6 +8,10 @@ import { PermisoComponent } from './permiso/permiso.component';
 import { AsignarPermisosComponent } from './asignar-permisos/asignar-permisos.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { BancoComponent } from './banco/banco.component';
+import { TipoTarjetaComponent } from './tipo-tarjeta/tipo-tarjeta.component';
+import { TipoCierreComponent } from './tipo-cierre/tipo-cierre.component';
+import { ProveedorTarjetaComponent } from './proveedor-tarjeta/proveedor-tarjeta.component';
+import { CronogramaTarjetaComponent } from './cronograma-tarjeta/cronograma-tarjeta.component';
 
 const routes: Routes = [
   {
@@ -57,9 +61,31 @@ const routes: Routes = [
         component: UsuarioComponent
       },
       
+
+
+
+
+
+
       {
         path: 'banco',
         component: BancoComponent
+      },
+      {
+        path: 'proveedor-tarjeta',
+        component: ProveedorTarjetaComponent
+      },
+      {
+        path: 'tipo-tarjeta',
+        component: TipoTarjetaComponent
+      },
+      {
+        path: 'tipo-cierre',
+        component: TipoCierreComponent
+      },
+      {
+        path: 'cronograma-tarjeta',
+        component: CronogramaTarjetaComponent
       },
      
       {

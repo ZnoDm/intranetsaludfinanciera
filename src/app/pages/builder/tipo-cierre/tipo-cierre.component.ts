@@ -7,17 +7,17 @@ import { Observable, Subscription } from 'rxjs';
 import { TableResponseModel } from '../../../_metronic/shared/crud-table/models/table.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { PermisoService } from 'src/app/shared/services/permiso.service';
-import { SaveUpdatePermisoModalComponent } from './save-update-permiso-modal/save-update-permiso-modal.component';
+import { TipoCierreService } from 'src/app/shared/services/tipo-cierre.service';
+import { SaveUpdateTipoCierreModalComponent } from './save-update-tipo-cierre-modal/save-update-tipo-cierre-modal.component';
 import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.component';
 
 
 @Component({
     selector: 'app-permiso',
-    templateUrl: './permiso.component.html',
-    styleUrls: ['./permiso.component.scss'],
+    templateUrl: './tipo-cierre.component.html',
+    styleUrls: ['./tipo-cierre.component.scss'],
 })
-export class PermisoComponent implements OnInit {
+export class TipoCierreComponent implements OnInit {
 
     
   load_data: boolean = true;
@@ -40,7 +40,7 @@ export class PermisoComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public permisoService: PermisoService,
+    public permisoService: TipoCierreService,
     public toastr: ToastrManager,
     private chgRef: ChangeDetectorRef,) { 
       this.isLoading$ = this.permisoService.isLoading$;
@@ -49,7 +49,7 @@ export class PermisoComponent implements OnInit {
   ngOnInit(): void {
     this.listData = new MatTableDataSource([]);
     this.searchForm();
-    this.getPermisoes();
+    this.getTipoCierrees();
   }
 
   ngOnDestroy(): void {
@@ -64,7 +64,7 @@ export class PermisoComponent implements OnInit {
     });    
   }
 
-  getPermisoes() {
+  getTipoCierrees() {
     this.listData = new MatTableDataSource([]);
     this.searchBan = false;
     this.load_data = false;
@@ -92,20 +92,20 @@ export class PermisoComponent implements OnInit {
   }
 
   create(item) {
-    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdateTipoCierreModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getPermisoes();     
+      this.getTipoCierrees();     
     }, (reason) => {
      
     }); 
   }
 
   edit(item) {
-    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdateTipoCierreModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getPermisoes();
+      this.getTipoCierrees();
     }, (reason) => {
      
     }); 
@@ -124,14 +124,14 @@ export class PermisoComponent implements OnInit {
   delete(item) {
     const modalRef = this.modalService.open(DeleteModalComponent);
     modalRef.componentInstance.id = item.id;
-    modalRef.componentInstance.titulo = 'Eliminar Permiso';
+    modalRef.componentInstance.titulo = 'Eliminar TipoCierre';
     modalRef.componentInstance.descripcion = `Esta seguro de eliminar el permiso ${item.nombre} ?`;
-    modalRef.componentInstance.msgloading = 'Eliminando Permiso...';
+    modalRef.componentInstance.msgloading = 'Eliminando TipoCierre...';
     modalRef.componentInstance.service = ()=>{
       return this.permisoService.delete(item.id);
     };
     modalRef.result.then((result) => {
-      this.getPermisoes();
+      this.getTipoCierrees();
     }, (reason) => {
       
     });  

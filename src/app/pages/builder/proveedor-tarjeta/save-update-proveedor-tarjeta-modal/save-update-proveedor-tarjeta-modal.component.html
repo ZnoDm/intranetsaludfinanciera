@@ -4,7 +4,7 @@
         <ng-container>
           <ng-container *ngIf="id > 0">Editar</ng-container>
           <ng-container *ngIf="id === 0">Nuevo</ng-container>
-          ProveedorTarjeta
+          Proveedor Tarjeta
           <ng-container *ngIf="id > 0"
             >'{{ item.nombre }}'</ng-container
           >
@@ -32,17 +32,7 @@
                       <div class="invalid-feedback" *ngIf="controlHasError('required', 'Nombre')"> Nombre obligatorio. </div> 
                       <div class="valid-feedback" *ngIf="isControlValid('Nombre')">Nombre correcto</div>
                     </div>
-                </div> 
-                <br>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <label class="form-label">Path</label>
-                        <input type="text" class="custom-input form-control form-control-lg form-control-solid" name="Url" placeholder="Url" autocomplete="off" [class.is-invalid]="isControlInvalid('Url')" [class.is-valid]="isControlValid('Url')" formControlName="Url"/>             
-                        <div class="feedback" *ngIf="!formGroup.controls['Url'].value">Por favor, ingresa <b>Url</b></div>
-                        <div class="invalid-feedback" *ngIf="controlHasError('required', 'Url')"> Url obligatoria. </div> 
-                        <div class="valid-feedback" *ngIf="isControlValid('Url')">Url correcto</div>
-                      </div>
-                  </div>                 
+                </div>                
             </div>                    
           </form>
       </ng-container>

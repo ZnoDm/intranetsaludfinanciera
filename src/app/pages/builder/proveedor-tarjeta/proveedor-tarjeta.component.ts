@@ -27,7 +27,7 @@ export class ProveedorTarjetaComponent implements OnInit {
   searchGroup: FormGroup;
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Nro', 'Nombre', 'Url', 'actions'];
+  displayedColumns: string[] = ['Nro', 'Nombre', 'actions'];
 
   @ViewChild(MatSort) MatSort: MatSort;
   @ViewChild('matPaginator', { static: true }) paginator: MatPaginator;

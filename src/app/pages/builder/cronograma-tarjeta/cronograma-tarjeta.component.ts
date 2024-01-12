@@ -7,17 +7,17 @@ import { Observable, Subscription } from 'rxjs';
 import { TableResponseModel } from '../../../_metronic/shared/crud-table/models/table.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
-import { PermisoService } from 'src/app/shared/services/permiso.service';
-import { SaveUpdatePermisoModalComponent } from './save-update-permiso-modal/save-update-permiso-modal.component';
+import { CronogramaTarjetaService } from 'src/app/shared/services/cronograma-tarjeta.service';
+import { SaveUpdateCronogramaTarjetaModalComponent } from './save-update-cronograma-tarjeta-modal/save-update-cronograma-tarjeta-modal.component';
 import { DeleteModalComponent } from '../../shared/delete-modal/delete-modal.component';
 
 
 @Component({
-    selector: 'app-permiso',
-    templateUrl: './permiso.component.html',
-    styleUrls: ['./permiso.component.scss'],
+    selector: 'app-cronograma-tarjeta',
+    templateUrl: './cronograma-tarjeta.component.html',
+    styleUrls: ['./cronograma-tarjeta.component.scss'],
 })
-export class PermisoComponent implements OnInit {
+export class CronogramaTarjetaComponent implements OnInit {
 
     
   load_data: boolean = true;
@@ -27,7 +27,7 @@ export class PermisoComponent implements OnInit {
   searchGroup: FormGroup;
 
   listData: MatTableDataSource<any>;
-  displayedColumns: string[] = ['Nro', 'Nombre', 'Url', 'actions'];
+  displayedColumns: string[] = ['Nro', 'banco', 'tipoCierre','anio', 'mes', 'periodo', 'actions'];
 
   @ViewChild(MatSort) MatSort: MatSort;
   @ViewChild('matPaginator', { static: true }) paginator: MatPaginator;
@@ -40,16 +40,16 @@ export class PermisoComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private fb: FormBuilder,
-    public permisoService: PermisoService,
+    public cronogramaTarjetaService: CronogramaTarjetaService,
     public toastr: ToastrManager,
     private chgRef: ChangeDetectorRef,) { 
-      this.isLoading$ = this.permisoService.isLoading$;
+      this.isLoading$ = this.cronogramaTarjetaService.isLoading$;
   }
 
   ngOnInit(): void {
     this.listData = new MatTableDataSource([]);
     this.searchForm();
-    this.getPermisoes();
+    this.getCronogramaTarjetaes();
   }
 
   ngOnDestroy(): void {
@@ -64,14 +64,15 @@ export class PermisoComponent implements OnInit {
     });    
   }
 
-  getPermisoes() {
+  getCronogramaTarjetaes() {
     this.listData = new MatTableDataSource([]);
     this.searchBan = false;
     this.load_data = false;
     this.no_data = true;
 
-    this.permisoService.findAll().subscribe(
+    this.cronogramaTarjetaService.findAll().subscribe(
       (data:any) => {
+        console.log(data);
         this.load_data = true;
         this.searchBan = false;
         this.listData = new MatTableDataSource(data);
@@ -92,20 +93,20 @@ export class PermisoComponent implements OnInit {
   }
 
   create(item) {
-    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdateCronogramaTarjetaModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getPermisoes();     
+      this.getCronogramaTarjetaes();     
     }, (reason) => {
      
     }); 
   }
 
   edit(item) {
-    const modalRef = this.modalService.open(SaveUpdatePermisoModalComponent, { size: 'ms' });
+    const modalRef = this.modalService.open(SaveUpdateCronogramaTarjetaModalComponent, { size: 'ms' });
     modalRef.componentInstance.item = item;
     modalRef.result.then((result) => {
-      this.getPermisoes();
+      this.getCronogramaTarjetaes();
     }, (reason) => {
      
     }); 
@@ -124,14 +125,14 @@ export class PermisoComponent implements OnInit {
   delete(item) {
     const modalRef = this.modalService.open(DeleteModalComponent);
     modalRef.componentInstance.id = item.id;
-    modalRef.componentInstance.titulo = 'Eliminar Permiso';
-    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el permiso ${item.nombre} ?`;
-    modalRef.componentInstance.msgloading = 'Eliminando Permiso...';
+    modalRef.componentInstance.titulo = 'Eliminar CronogramaTarjeta';
+    modalRef.componentInstance.descripcion = `Esta seguro de eliminar el banco ${item.nombre} ?`;
+    modalRef.componentInstance.msgloading = 'Eliminando CronogramaTarjeta...';
     modalRef.componentInstance.service = ()=>{
-      return this.permisoService.delete(item.id);
+      return this.cronogramaTarjetaService.delete(item.id);
     };
     modalRef.result.then((result) => {
-      this.getPermisoes();
+      this.getCronogramaTarjetaes();
     }, (reason) => {
       
     });  

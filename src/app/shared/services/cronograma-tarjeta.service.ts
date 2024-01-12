@@ -9,12 +9,12 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
-export class TipoTarjetaService {
+export class CronogramaTarjetaService {
 
   isLoadingSubject: BehaviorSubject<boolean>;
   isLoading$: Observable<boolean>;
 
-  apiUrl = environment.apiUrl + '/tipo-tarjeta';
+  apiUrl = environment.apiUrl + '/cronograma-tarjeta';
   constructor(
       private httpClient: HttpClient,
       private headerBasicAuthorization: HeaderBasicAuthorizationService,
@@ -50,10 +50,10 @@ export class TipoTarjetaService {
     );
   }
 
-  create(createTipoTarjetaDto: Partial<any>): Observable<any> {
+  create(createCronogramaTarjetaDto: Partial<any>): Observable<any> {
     this.isLoadingSubject.next(true);
     return this.httpClient.post<any>(`${this.apiUrl}/`, 
-    createTipoTarjetaDto,
+    createCronogramaTarjetaDto,
     { headers: this.headerBasicAuthorization.getHeaders()}
     ).pipe( 
       map( data => data ),
@@ -64,10 +64,10 @@ export class TipoTarjetaService {
     );
   }
 
-  update(id: number, updateTipoTarjetaDto: Partial<any>): Observable<any> {
+  update(id: number, updateCronogramaTarjetaDto: Partial<any>): Observable<any> {
     this.isLoadingSubject.next(true);
     return this.httpClient.patch<any>(`${this.apiUrl}/${id}`, 
-    updateTipoTarjetaDto,
+    updateCronogramaTarjetaDto,
     { headers: this.headerBasicAuthorization.getHeaders()}
     ).pipe( 
       map( data => data ),

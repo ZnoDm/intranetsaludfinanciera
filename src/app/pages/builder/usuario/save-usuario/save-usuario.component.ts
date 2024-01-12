@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NgbActiveModal, NgbDateAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrManager } from 'ng6-toastr-notifications';
@@ -38,10 +38,13 @@ export class SaveUpdateUsuarioComponent implements OnInit {
     private fb: FormBuilder, 
     public modal: NgbActiveModal,
     public toastr: ToastrManager,
-    ) { }
+    private chgRef: ChangeDetectorRef
+    ) { 
+      
+    this.isLoading$ = this.userService.isLoading$;
+    }
 
   ngOnInit(): void {
-    this.isLoading$ = this.userService.isLoading$;
     this.loadUsuario();
  
   }
@@ -49,9 +52,11 @@ export class SaveUpdateUsuarioComponent implements OnInit {
 	getRoles(PosibleValor){
 		this.rolService.getComboRoles().subscribe(
 			(data:any)=>{
+        console.log(data)
 				this.array_roles = data;
 				if(PosibleValor !== null){
 					this.formGroup.controls.Rol.setValue(PosibleValor);
+          this.chgRef.markForCheck();
 				}
 			}, (errorServicio)=>{
 				;
@@ -62,9 +67,11 @@ export class SaveUpdateUsuarioComponent implements OnInit {
   getPersonas(PosibleValor){
 		this.personService.getComboPersonas().subscribe(
 			(data:any)=>{
-				this.array_roles = data;
+        console.log(data)
+				this.array_personas = data;
 				if(PosibleValor !== null){
 					this.formGroup.controls.Persona.setValue(PosibleValor);
+          this.chgRef.markForCheck();
 				}
 			}, (errorServicio)=>{
 				;
@@ -73,16 +80,6 @@ export class SaveUpdateUsuarioComponent implements OnInit {
 	}
 
   loadUsuario() {
-    // if (this.item !== null) {
-    //   this.idUsuario = this.item.idUsuario;
-    //   this.loadForm();    
-   
-    //   this.formGroup.controls.Email.setValue(this.item.email);  
-    //   this.formGroup.controls.Password.setValue(this.item.password);    
-    //   this.formGroup.controls.Activo.setValue(this.item.activo);   
-    //   this.getPersonas();
-    //   this.getRoles();   
-    // } else {
     this.idUsuario = 0;
     this.loadForm();
     this.getPersonas(null);

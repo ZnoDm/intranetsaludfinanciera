@@ -27,10 +27,6 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</mat-header-cell>
                     <mat-cell *matCellDef="let lesson">{{lesson.nombre}}</mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="Url">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>PATH</mat-header-cell>
-                    <mat-cell *matCellDef="let lesson">{{lesson.url}}</mat-cell>
-                </ng-container>
                 
                 <ng-container matColumnDef="actions">
                     <mat-header-cell *matHeaderCellDef>ACCIONES</mat-header-cell>

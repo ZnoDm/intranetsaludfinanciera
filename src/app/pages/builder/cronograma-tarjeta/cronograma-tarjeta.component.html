@@ -1,10 +1,10 @@
 <div class="card card-custom gutter-b mt-5">
     <div class="card-header">
       <div class="card-title">
-        <h3 class="card-label">Permiso</h3>
+        <h3 class="card-label">CronogramaTarjeta</h3>
       </div>
       <div class="card-toolbar">
-        <button type="button" (click)="create(null)" class="btn btn-primary">Nuevo Permiso</button>
+        <button type="button" (click)="create(null)" class="btn btn-primary">Nuevo CronogramaTarjeta</button>
       </div>
     </div>
     <div class="card-body">
@@ -23,13 +23,25 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>N°</mat-header-cell>
                     <mat-cell *matCellDef="let i = index;">{{matPaginator.pageSize * matPaginator.pageIndex + i + 1}}</mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="Nombre">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>NOMBRE</mat-header-cell>
-                    <mat-cell *matCellDef="let lesson">{{lesson.nombre}}</mat-cell>
+                <ng-container matColumnDef="banco">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>BANCO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.banco.nombre}}</mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="Url">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>PATH</mat-header-cell>
-                    <mat-cell *matCellDef="let lesson">{{lesson.url}}</mat-cell>
+                <ng-container matColumnDef="tipoCierre">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>TIPO CIERRE</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.tipoCierre.nombre}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="anio">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>AÑO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.anio}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="mes">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>MES</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.mes}}</mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="periodo">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>PERIODO</mat-header-cell>
+                    <mat-cell *matCellDef="let lesson">{{lesson.periodo}}</mat-cell>
                 </ng-container>
                 
                 <ng-container matColumnDef="actions">

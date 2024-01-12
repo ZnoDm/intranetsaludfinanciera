@@ -25,7 +25,7 @@ export class RolService {
 
   getComboRoles(): Observable<any> {
     this.isLoadingSubject.next(true);
-    return this.httpClient.get<any[]>(`${this.apiUrl}/combo`, { headers: this.headerBasicAuthorization.getHeaders() })
+    return this.httpClient.get<any[]>(`${this.apiUrl}/listar`, { headers: this.headerBasicAuthorization.getHeaders() })
     .pipe(
         catchError((err) => {
           return of(err);

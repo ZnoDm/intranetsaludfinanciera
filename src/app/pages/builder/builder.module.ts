@@ -39,6 +39,12 @@ import { SaveUpdateProveedorTarjetaModalComponent } from './proveedor-tarjeta/sa
 import { TipoTarjetaComponent } from './tipo-tarjeta/tipo-tarjeta.component';
 import { SaveUpdateTipoTarjetaModalComponent } from './tipo-tarjeta/save-update-tipo-tarjeta-modal/save-update-tipo-tarjeta-modal.component';
 import { AsignarRolComponent } from './usuario/asignar-rol/asignar-rol.component';
+import { SaveUpdateUsuarioComponent } from './usuario/save-usuario/save-usuario.component';
+import { UpdateUsuarioComponent } from './usuario/update-usuario/update-usuario.component';
+import { TipoCierreComponent } from './tipo-cierre/tipo-cierre.component';
+import { SaveUpdateTipoCierreModalComponent } from './tipo-cierre/save-update-tipo-cierre-modal/save-update-tipo-cierre-modal.component';
+import { CronogramaTarjetaComponent } from './cronograma-tarjeta/cronograma-tarjeta.component';
+import { SaveUpdateCronogramaTarjetaModalComponent } from './cronograma-tarjeta/save-update-cronograma-tarjeta-modal/save-update-cronograma-tarjeta-modal.component';
 @NgModule({
   declarations: [
     BuilderComponent,
@@ -59,6 +65,11 @@ import { AsignarRolComponent } from './usuario/asignar-rol/asignar-rol.component
     UsuarioComponent,
     ResetPasswordComponent,
     AsignarRolComponent,
+    SaveUpdateUsuarioComponent,
+    UpdateUsuarioComponent,
+
+
+
     
     BancoComponent,
     SaveUpdateBancoModalComponent,
@@ -66,8 +77,14 @@ import { AsignarRolComponent } from './usuario/asignar-rol/asignar-rol.component
     ProveedorTarjetaComponent,
     SaveUpdateProveedorTarjetaModalComponent,
 
+    TipoCierreComponent,
+    SaveUpdateTipoCierreModalComponent,
+
     TipoTarjetaComponent,
-    SaveUpdateTipoTarjetaModalComponent
+    SaveUpdateTipoTarjetaModalComponent,
+
+    CronogramaTarjetaComponent,
+    SaveUpdateCronogramaTarjetaModalComponent
     
   ],
   imports: [
